@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  iTraining
+
+  Created by Andrey Kulinskiy on 3/5/15.
+  Copyright (c) 2015 Andrey Kulinskiy. All rights reserved.
+*/
+
+"***Alert" = "";
+"***Ok" = "Ok";
+"***Cancel" = "Cancel";
+"***Yes" = "Yes";
+"***No" = "No";
+"***Save" = "Save";
+"***Done" = "Done";
+"***DONE" = "DONE";
+"***Send" = "Send";
+"***SEND" = "SEND";
+"***Feedback" = "Feedback";
+"***Delete" = "Delete";
+"***GoTo" = "Go to";
