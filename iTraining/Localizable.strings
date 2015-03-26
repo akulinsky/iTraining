@@ -19,3 +19,13 @@
 "***Feedback" = "Feedback";
 "***Delete" = "Delete";
 "***GoTo" = "Go to";
+
+// ContextMenuView
+"***ContextMenuView_Edit" = "Edit";
+"***ContextMenuView_NewTraining" = "New Training";
+
+// TrainingListController
+"***TrainingListController_Title" = "Training List";
+
+// TrainingGroupController
+"***TrainingGroupController_Title" = "Training Group";

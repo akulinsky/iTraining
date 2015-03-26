@@ -14,9 +14,32 @@ class ScreenManager:NSObject {
     
     // MARK:
     // MARK: property
-    let mainScreen = MainViewController ()
     let window: UIWindow?
     let navigationController: NavigationController?
+    
+    private lazy var mainScreen: MainViewController = {
+        
+        var object: MainViewController = MainViewController()
+        object.shouldDelegateAutorotateToVisiblePanel = false
+        object.leftFixedWidth = 130
+        
+        object.leftPanel = self.navigationPanel
+        object.centerPanel = self.navigationControllerForViewController(self.trainingListController)
+        
+        return object
+        }()
+    
+    private lazy var trainingListController: TrainingListController = {
+        
+        var object = TrainingListController()
+        return object
+        }()
+    
+    private lazy var navigationPanel: NavigationPanelController = {
+        
+        var object = NavigationPanelController()
+        return object
+        }()
     
     // MARK:
     init? (window: UIWindow?)
@@ -28,6 +51,11 @@ class ScreenManager:NSObject {
         }
         self.window = window
         self.navigationController = self.window?.rootViewController as? NavigationController;
+        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController!.navigationBar.shadowImage = UIImage()
+        self.navigationController!.navigationBar.translucent = false
+        self.navigationController!.navigationBarHidden = true
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
         
         subscribeToEvents()
         showMainScreenAnimation(false)
@@ -76,6 +104,20 @@ class ScreenManager:NSObject {
                 self.navigationController!.pushViewController(self.mainScreen, animated: animation)
             }
         }
+    }
+    
+    private func showTrainingListScreen(animation: Bool) {
+        
+        self.mainScreen.centerPanel = self.navigationControllerForViewController(self.trainingListController)
+    }
+    
+    private func navigationControllerForViewController(viewController: UIViewController) -> UINavigationController {
+        var navigation = UINavigationController(rootViewController: viewController)
+        navigation.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        navigation.navigationBar.shadowImage = UIImage()
+        navigation.navigationBar.translucent = true
+        
+        return navigation
     }
     
     // MARK:

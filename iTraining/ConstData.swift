@@ -16,3 +16,7 @@ struct NotificationCenterEvents {
     static let AppDidEnterBackgroundEvent = "AppDidEnterBackgroundEvent"
     static let AppDidEnterForegroundEvent = "AppDidEnterForegroundEvent"
 }
+
+struct TableViewCell {
+    static let identifier = "cellID"
+}

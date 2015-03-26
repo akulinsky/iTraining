@@ -8,7 +8,16 @@
 
 import UIKit
 
-class Util {
+public func delay(delay:Double, closure:()->()) {
+    dispatch_after(
+        dispatch_time(
+            DISPATCH_TIME_NOW,
+            Int64(delay * Double(NSEC_PER_SEC))
+        ),
+        dispatch_get_main_queue(), closure)
+}
+
+class Utils {
     
     // MARK: Style
     class var colorRed: UIColor {
@@ -47,6 +56,14 @@ class Util {
         return UIColorMakeRGB(red: 239, green: 239, blue: 239)
     }
     
+    class var colorNavigationBar: UIColor {
+        return UIColorMakeRGB(red: 240, green: 240, blue: 240)
+    }
+    
+    class var colorBackground: UIColor {
+        return UIColorMakeRGB(red: 250, green: 250, blue: 250)
+    }
+    
     // MARK:
     // MARK: Date
     class func dateFromString(strDate: String) -> NSDate? {
@@ -80,7 +97,18 @@ class Util {
         return df.stringFromDate(date!)
     }
     
+    class func stringFromClass(anyClass: AnyClass) -> String {
+        var classString = NSStringFromClass(anyClass)
+        let classArray:Array<String> = classString.componentsSeparatedByString(".")
+        let className = classArray.last!
+        return className
+    }
+    
     // MARK:
+    
+    class func interfaceOrientationIsPortrait() -> Bool {
+        return UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation)
+    }
 }
 
 func UIColorMakeRGBAlpha(#red: Float, #green: Float, #blue: Float, #alpha: Float) -> UIColor {
