@@ -26,8 +26,8 @@
 		F64729591AC1B73000383D63 /* TrainingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64729581AC1B73000383D63 /* TrainingListCell.swift */; };
 		F647295C1AC1C23200383D63 /* dots-hor.png in Resources */ = {isa = PBXBuildFile; fileRef = F647295A1AC1C23200383D63 /* dots-hor.png */; };
 		F647295D1AC1C23200383D63 /* dots-hor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F647295B1AC1C23200383D63 /* dots-hor@2x.png */; };
-		F64729601AC1C8E800383D63 /* dots-hor_Rad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F647295E1AC1C8E800383D63 /* dots-hor_Rad@2x.png */; };
-		F64729611AC1C8E800383D63 /* dots-hor_Rad.png in Resources */ = {isa = PBXBuildFile; fileRef = F647295F1AC1C8E800383D63 /* dots-hor_Rad.png */; };
+		F64729601AC1C8E800383D63 /* dots-hor_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F647295E1AC1C8E800383D63 /* dots-hor_red@2x.png */; };
+		F64729611AC1C8E800383D63 /* dots-hor_red.png in Resources */ = {isa = PBXBuildFile; fileRef = F647295F1AC1C8E800383D63 /* dots-hor_red.png */; };
 		F64729641AC1CB0E00383D63 /* ContextMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64729631AC1CB0E00383D63 /* ContextMenuView.swift */; };
 		F64729661AC2CD2300383D63 /* AlertSelectDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64729651AC2CD2300383D63 /* AlertSelectDateView.swift */; };
 		F64729681AC2F0F400383D63 /* AKUIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64729671AC2F0F400383D63 /* AKUIView+Extensions.swift */; };
@@ -99,8 +99,8 @@
 		F64729581AC1B73000383D63 /* TrainingListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrainingListCell.swift; sourceTree = "<group>"; };
 		F647295A1AC1C23200383D63 /* dots-hor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-hor.png"; sourceTree = "<group>"; };
 		F647295B1AC1C23200383D63 /* dots-hor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-hor@2x.png"; sourceTree = "<group>"; };
-		F647295E1AC1C8E800383D63 /* dots-hor_Rad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-hor_Rad@2x.png"; sourceTree = "<group>"; };
-		F647295F1AC1C8E800383D63 /* dots-hor_Rad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-hor_Rad.png"; sourceTree = "<group>"; };
+		F647295E1AC1C8E800383D63 /* dots-hor_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-hor_red@2x.png"; sourceTree = "<group>"; };
+		F647295F1AC1C8E800383D63 /* dots-hor_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-hor_red.png"; sourceTree = "<group>"; };
 		F64729631AC1CB0E00383D63 /* ContextMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextMenuView.swift; sourceTree = "<group>"; };
 		F64729651AC2CD2300383D63 /* AlertSelectDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertSelectDateView.swift; sourceTree = "<group>"; };
 		F64729671AC2F0F400383D63 /* AKUIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AKUIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -345,8 +345,8 @@
 		F6DE2A941AAA0DA5006C8103 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				F647295E1AC1C8E800383D63 /* dots-hor_Rad@2x.png */,
-				F647295F1AC1C8E800383D63 /* dots-hor_Rad.png */,
+				F647295E1AC1C8E800383D63 /* dots-hor_red@2x.png */,
+				F647295F1AC1C8E800383D63 /* dots-hor_red.png */,
 				F647295A1AC1C23200383D63 /* dots-hor.png */,
 				F647295B1AC1C23200383D63 /* dots-hor@2x.png */,
 				F6DE2A951AAA0DA5006C8103 /* grayBackground.png */,
@@ -441,8 +441,8 @@
 				F6DE2A8B1AA8A212006C8103 /* Localizable.strings in Resources */,
 				F647295D1AC1C23200383D63 /* dots-hor@2x.png in Resources */,
 				F63576C71A9F234700B71A0A /* LaunchScreen.xib in Resources */,
-				F64729601AC1C8E800383D63 /* dots-hor_Rad@2x.png in Resources */,
-				F64729611AC1C8E800383D63 /* dots-hor_Rad.png in Resources */,
+				F64729601AC1C8E800383D63 /* dots-hor_red@2x.png in Resources */,
+				F64729611AC1C8E800383D63 /* dots-hor_red.png in Resources */,
 				F63576C41A9F234700B71A0A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

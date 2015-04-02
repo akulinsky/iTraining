@@ -35,7 +35,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     private lazy var btnOption: UIButton = {
         
         let button = UIButton(frame: CGRectMake(0, 0, 30, 40))
-        button.setImage(UIImage(named: "dots-hor_rad"), forState: UIControlState.Normal)
+        button.setImage(UIImage(named: "dots-hor_red"), forState: UIControlState.Normal)
         button.setImage(UIImage(named: "dots-hor"), forState: UIControlState.Highlighted)
         button.addTarget(self, action: "clickBtnOption:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -122,13 +122,13 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                 
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
-                        self.changePositionItems()
+                        //self.changePositionItems()
                         var item: ExerciseItem = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseItem) as ExerciseItem
                         item.title = name
                         if let trainingGroupItem = self.trainingGroupItem {
                             item.trainingGroup = trainingGroupItem
                         }
-                        item.position = 0
+                        item.position = self.fetchedResults!.fetchedObjects!.count
                         
                         DataManager.save()
                     }
@@ -138,13 +138,13 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                 
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
-                        self.changePositionItems()
+                        //self.changePositionItems()
                         var item: ExerciseTitle = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseTitle) as ExerciseTitle
                         item.title = name
                         if let trainingGroupItem = self.trainingGroupItem {
                             item.trainingGroup = trainingGroupItem
                         }
-                        item.position = 0
+                        item.position = self.fetchedResults!.fetchedObjects!.count
                         
                         DataManager.save()
                     }

@@ -32,7 +32,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     private lazy var btnOption: UIButton = {
         
         let button = UIButton(frame: CGRectMake(0, 0, 30, 40))
-        button.setImage(UIImage(named: "dots-hor_rad"), forState: UIControlState.Normal)
+        button.setImage(UIImage(named: "dots-hor_red"), forState: UIControlState.Normal)
         button.setImage(UIImage(named: "dots-hor"), forState: UIControlState.Highlighted)
         button.addTarget(self, action: "clickBtnOption:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -117,13 +117,13 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
                 
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
-                        self.changePositionItems()
+                        //self.changePositionItems()
                         var item: TrainingGroupItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingGroupItem) as TrainingGroupItem
                         item.title = name
                         if let trainingItem = self.trainingItem {
                             item.training = trainingItem
                         }
-                        item.position = 0
+                        item.position = self.fetchedResults!.fetchedObjects!.count
                         
                         DataManager.save()
                     }

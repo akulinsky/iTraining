@@ -31,7 +31,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     private lazy var btnOption: UIButton = {
        
         let button = UIButton(frame: CGRectMake(0, 0, 30, 40))
-        button.setImage(UIImage(named: "dots-hor_rad"), forState: UIControlState.Normal)
+        button.setImage(UIImage(named: "dots-hor_red"), forState: UIControlState.Normal)
         button.setImage(UIImage(named: "dots-hor"), forState: UIControlState.Highlighted)
         button.addTarget(self, action: "clickBtnOption:", forControlEvents: UIControlEvents.TouchUpInside)
         
@@ -112,10 +112,10 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
                 
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
-                        self.changePositionItems()
+                        //self.changePositionItems()
                         var item: TrainingItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingItem) as TrainingItem
                         item.title = name
-                        item.position = 0
+                        item.position = self.fetchedResults!.fetchedObjects!.count
                         
                         DataManager.save()
                     }

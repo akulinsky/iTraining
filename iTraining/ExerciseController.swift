@@ -34,7 +34,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     private lazy var btnOption: UIButton = {
         
         let button = UIButton(frame: CGRectMake(0, 0, 30, 40))
-        button.setImage(UIImage(named: "dots-hor_rad"), forState: UIControlState.Normal)
+        button.setImage(UIImage(named: "dots-hor_red"), forState: UIControlState.Normal)
         button.setImage(UIImage(named: "dots-hor"), forState: UIControlState.Highlighted)
         button.addTarget(self, action: "clickBtnOption:", forControlEvents: UIControlEvents.TouchUpInside)
         
