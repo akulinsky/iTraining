@@ -8,22 +8,33 @@
 
 import Foundation
 
-enum Rank: Int {
-    case Ace = 1
-    case Two = 2, Three, Four, Five, Six, Seven, Eight, Nine, Ten
-    case Jack, Queen, King
-    func simpleDescription() -> String {
+enum MuscleGroup: Int {
+    
+    case Chest = 1, Back, Biceps, Triceps, Shoulders, Legs, Abdominals
+    
+    func name() -> String {
+        
+        var strName = "empty"
+        
         switch self {
-        case .Ace:
-            return "ace"
-        case .Jack:
-            return "jack"
-        case .Queen:
-            return "queen"
-        case .King:
-            return "king"
+        case .Chest:
+            strName = NSLocalizedString("***MuscleGroup_Chest", comment:"")
+        case .Back:
+            strName = NSLocalizedString("***MuscleGroup_Back", comment:"")
+        case .Biceps:
+            strName = NSLocalizedString("***MuscleGroup_Biceps", comment:"")
+        case .Triceps:
+            strName = NSLocalizedString("***MuscleGroup_Triceps", comment:"")
+        case .Shoulders:
+            strName = NSLocalizedString("***MuscleGroup_Shoulders", comment:"")
+        case .Legs:
+            strName = NSLocalizedString("***MuscleGroup_Legs", comment:"")
+        case .Abdominals:
+            strName = NSLocalizedString("***MuscleGroup_Abdominals", comment:"")
         default:
-            return "empty"
+            strName = "empty"
         }
+        
+        return strName
     }
 }

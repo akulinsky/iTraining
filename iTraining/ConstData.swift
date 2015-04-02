@@ -19,4 +19,14 @@ struct NotificationCenterEvents {
 
 struct TableViewCell {
     static let identifier = "cellID"
+    static let identifierExerciseTitle = "cellExerciseTitleID"
+}
+
+struct CoreDataObjectNames {
+    static let SettingInfo = "SettingInfo"
+    static let TrainingItem = "TrainingItem"
+    static let TrainingGroupItem = "TrainingGroupItem"
+    static let ExerciseItem = "ExerciseItem"
+    static let ExerciseTitle = "ExerciseTitle"
+    static let SetsItem = "SetsItem"
 }

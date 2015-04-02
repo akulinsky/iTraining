@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
-class TrainingListController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+class TrainingListController: BaseViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
     // MARK:
     // MARK: property
+    private var fetchedResults: NSFetchedResultsController?
     
     private lazy var tableView: UITableView = {
         
@@ -21,11 +23,10 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         object.backgroundColor = UIColor.clearColor()
         object.separatorStyle = UITableViewCellSeparatorStyle.None
         object.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleWidth
+        object.allowsSelectionDuringEditing = true
         
         return object
         }()
-    
-    private var items: Array<String> = []
     
     private lazy var btnOption: UIButton = {
        
@@ -39,20 +40,16 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     
     // MARK:
     // MARK: methods
-    
-    // MARK: - Override Methods
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.title = NSLocalizedString("***TrainingListController_Title", comment:"")
+        self.fetchedResults = DataManager.fetchedResultsControllerForTrainingItems()
+        self.fetchedResults!.delegate = self
+        
         self.view.addSubview(self.tableView)
         
         self.showRightBarButton()
-        
-        for index in 0...5 {
-            self.items.append("item " + String(index))
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -77,6 +74,29 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         }
     }
     
+    private func changePositionItems() {
+        
+        var sectionInfo = self.fetchedResults!.sections![0] as NSFetchedResultsSectionInfo
+        
+        var index = 1
+        for item in sectionInfo.objects {
+            
+            if let obj = item as? TrainingItem {
+                obj.position = index
+                ++index
+            }
+        }
+    }
+    
+    private func changePositionItems(items: [TrainingItem]) {
+        
+        var index = 0
+        for item in items {
+            item.position = index
+            ++index
+        }
+    }
+    
     // MARK: - Action
     func clickBtnOption(sender: UIButton) {
         
@@ -92,8 +112,12 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
                 
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
-                        self.items.insert(name, atIndex: 0)
-                        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Fade)
+                        self.changePositionItems()
+                        var item: TrainingItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingItem) as TrainingItem
+                        item.title = name
+                        item.position = 0
+                        
+                        DataManager.save()
                     }
                 })
             }
@@ -111,7 +135,9 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.items.count
+        
+        var sectionInfo = self.fetchedResults!.sections![section] as NSFetchedResultsSectionInfo
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -122,8 +148,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
             cell = TrainingListCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewCell.identifier)
         }
         
-        let product = self.items[indexPath.row]
-        cell!.textLabel!.text = product
+        cell!.setData(self.fetchedResults!.objectAtIndexPath(indexPath))
         
         return cell!
     }
@@ -132,18 +157,33 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         return true
     }
     
+    var isMovingItem: Bool = false
+    
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
-        var item = self.items[sourceIndexPath.row]
-        self.items.removeAtIndex(sourceIndexPath.row)
-        self.items.insert(item, atIndex: destinationIndexPath.row)
+        isMovingItem = true
+        
+        if var todos = self.fetchedResults!.fetchedObjects as? [TrainingItem] {
+            let todo = todos[sourceIndexPath.row]
+            todos.removeAtIndex(sourceIndexPath.row)
+            todos.insert(todo, atIndex: destinationIndexPath.row)
+            
+            self.changePositionItems(todos)
+            
+            DataManager.save()
+        }
+        
+//        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//            tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows()!, withRowAnimation: UITableViewRowAnimation.Fade)
+//        })
+        
+        isMovingItem = false
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            self.items.removeAtIndex(indexPath.row)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as NSManagedObject)
         }
     }
     
@@ -151,12 +191,77 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         
         tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
         
-        let controller = TrainingGroupController()
-        self.navigationController?.navigationBar.tintColor = Utils.colorRed
-        self.navigationController!.pushViewController(controller, animated: true)
+        if self.tableView.editing {
+            if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? TrainingItem {
+                AlertNameView.show(item.title, blockName: { (name) -> () in
+                    if !name.isEmpty {
+                        item.title = name
+                        DataManager.save()
+                    }
+                })
+            }
+        }
+        else {
+            let controller = TrainingGroupController()
+            if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? TrainingItem {
+                controller.trainingItem = item
+            }
+            self.navigationController?.navigationBar.tintColor = Utils.colorRed
+            self.navigationController!.pushViewController(controller, animated: true)
+        }
+    }
+    
+    // MARK:
+    // MARK: NSFetchedResultsController Delegate
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        
+        if isMovingItem {
+            return
+        }
+        
+        switch type {
+            
+        case .Delete:
+            if let indexPath = indexPath {
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+            }
+        case .Insert:
+            if let newIndexPath = newIndexPath {
+                self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            }
+        case .Move:
+            if let indexPath = indexPath {
+                if let newIndexPath = newIndexPath {
+                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                    self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+            }
+        case .Update:
+            if let indexPath = indexPath {
+                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? TrainingListCell{
+                    cell.setData(anObject)
+                }
+            }
+        }
+    }
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        if isMovingItem {
+            return
+        }
+        self.tableView.beginUpdates()
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        if isMovingItem {
+            return
+        }
+        self.tableView.endUpdates()
     }
 
 }
+
+
 
 
 

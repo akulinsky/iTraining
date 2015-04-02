@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1510" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="BaseItem" representedClassName="iTraining.BaseItem" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="position" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ExerciseItem" representedClassName="iTraining.ExerciseItem" parentEntity="ExerciseTitle" syncable="YES">
+        <attribute name="breakTime" optional="YES" attributeType="Integer 64" defaultValueString="60" syncable="YES"/>
+        <attribute name="muscleGroup" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SetsItem" inverseName="exercise" inverseEntity="SetsItem" syncable="YES"/>
+    </entity>
+    <entity name="ExerciseTitle" representedClassName="iTraining.ExerciseTitle" parentEntity="BaseItem" syncable="YES">
+        <relationship name="trainingGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrainingGroupItem" inverseName="exercises" inverseEntity="TrainingGroupItem" syncable="YES"/>
+    </entity>
+    <entity name="SetsItem" representedClassName="iTraining.SetsItem" syncable="YES">
+        <attribute name="position" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="reps" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="time" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="exercise" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseItem" inverseName="sets" inverseEntity="ExerciseItem" syncable="YES"/>
+    </entity>
+    <entity name="SettingInfo" syncable="YES"/>
+    <entity name="TrainingGroupItem" representedClassName="iTraining.TrainingGroupItem" parentEntity="BaseItem" syncable="YES">
+        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExerciseTitle" inverseName="trainingGroup" inverseEntity="ExerciseTitle" syncable="YES"/>
+        <relationship name="training" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrainingItem" inverseName="trainingGroups" inverseEntity="TrainingItem" syncable="YES"/>
+    </entity>
+    <entity name="TrainingItem" representedClassName="iTraining.TrainingItem" parentEntity="BaseItem" syncable="YES">
+        <relationship name="trainingGroups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TrainingGroupItem" inverseName="training" inverseEntity="TrainingGroupItem" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="BaseItem" positionX="-27" positionY="63" width="128" height="88"/>
+        <element name="ExerciseItem" positionX="-18" positionY="27" width="128" height="90"/>
+        <element name="ExerciseTitle" positionX="-18" positionY="63" width="128" height="58"/>
+        <element name="SetsItem" positionX="0" positionY="45" width="128" height="118"/>
+        <element name="SettingInfo" positionX="-63" positionY="-18" width="128" height="45"/>
+        <element name="TrainingGroupItem" positionX="-36" positionY="9" width="128" height="73"/>
+        <element name="TrainingItem" positionX="-54" positionY="-9" width="128" height="58"/>
+    </elements>
+</model>

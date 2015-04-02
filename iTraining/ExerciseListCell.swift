@@ -1,5 +1,5 @@
 //
-//  TrainingGroupCell.swift
+//  ExerciseListCell.swift
 //  iTraining
 //
 //  Created by Andrey Kulinskiy on 3/26/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TrainingGroupCell: BaseCell {
+class ExerciseListCell: BaseCell {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,8 +30,8 @@ class TrainingGroupCell: BaseCell {
     }
     
     override func setData(data: AnyObject) {
-        if let item = data as? TrainingGroupItem {
-            self.textLabel!.text = item.title
+        if let exerciseItem = data as? ExerciseItem {
+            self.textLabel!.text = exerciseItem.title
         }
     }
 

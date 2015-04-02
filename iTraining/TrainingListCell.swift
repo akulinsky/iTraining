@@ -8,14 +8,10 @@
 
 import UIKit
 
-class TrainingListCell: UITableViewCell {
+class TrainingListCell: BaseCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.backgroundColor = UIColor.clearColor()
-        self.textLabel!.textColor = Utils.colorDarkText
-        self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -31,6 +27,12 @@ class TrainingListCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    override func setData(data: AnyObject) {
+        if let item = data as? TrainingItem {
+            self.textLabel!.text = item.title
+        }
     }
 
 }

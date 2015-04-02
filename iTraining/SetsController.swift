@@ -1,20 +1,20 @@
 //
-//  TrainingGroupController.swift
+//  SetsController.swift
 //  iTraining
 //
-//  Created by Andrey Kulinskiy on 3/26/15.
+//  Created by Andrey Kulinskiy on 3/31/15.
 //  Copyright (c) 2015 Andrey Kulinskiy. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
-class TrainingGroupController: BaseViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class SetsController: BaseViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
     // MARK:
     // MARK: property
     private var fetchedResults: NSFetchedResultsController?
-    var trainingItem: TrainingItem?
+    var exerciseItem: ExerciseItem?
     
     private lazy var tableView: UITableView = {
         
@@ -25,36 +25,23 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         object.separatorStyle = UITableViewCellSeparatorStyle.None
         object.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleWidth
         object.allowsSelectionDuringEditing = true
+        object.editing = true
         
         return object
         }()
     
-    private lazy var btnOption: UIButton = {
-        
-        let button = UIButton(frame: CGRectMake(0, 0, 30, 40))
-        button.setImage(UIImage(named: "dots-hor_rad"), forState: UIControlState.Normal)
-        button.setImage(UIImage(named: "dots-hor"), forState: UIControlState.Highlighted)
-        button.addTarget(self, action: "clickBtnOption:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        return button
-        }()
-    
     // MARK:
     // MARK: methods
-    
-    // MARK: - Override Methods
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = NSLocalizedString("***TrainingGroupController_Title", comment:"")
-        self.fetchedResults = DataManager.fetchedResultsControllerForTrainingGroupItems(trainingItem: self.trainingItem)
-        //self.fetchedResults = DataManager.fetchedResultsControllerForTrainingGroupItems(trainingItem: nil)
+        self.title = NSLocalizedString("***ContextMenuView_EditSets", comment:"")
+        self.fetchedResults = DataManager.fetchedResultsControllerForSetsItems(exerciseItem: self.exerciseItem)
         self.fetchedResults!.delegate = self
         
         self.view.addSubview(self.tableView)
         
-        self.showRightBarButton()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "clickBtnAdd:")
     }
     
     override func didReceiveMemoryWarning() {
@@ -70,15 +57,6 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         super.resizeViews()
     }
     
-    func showRightBarButton() {
-        if self.tableView.editing {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "clickBtnDone:")
-        }
-        else {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.btnOption)
-        }
-    }
-    
     private func changePositionItems() {
         
         var sectionInfo = self.fetchedResults!.sections![0] as NSFetchedResultsSectionInfo
@@ -86,14 +64,14 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         var index = 1
         for item in sectionInfo.objects {
             
-            if let obj = item as? TrainingGroupItem {
+            if let obj = item as? SetsItem {
                 obj.position = index
                 ++index
             }
         }
     }
     
-    private func changePositionItems(items: [TrainingGroupItem]) {
+    private func changePositionItems(items: [SetsItem]) {
         
         var index = 0
         for item in items {
@@ -103,52 +81,33 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     }
     
     // MARK: - Action
-    func clickBtnOption(sender: UIButton) {
+    func clickBtnAdd(sender: UIBarButtonItem) {
         
-        let items = [NSLocalizedString("***ContextMenuView_Edit", comment:""),
-            NSLocalizedString("***ContextMenuView_NewTrainingGroup", comment:"")]
-        
-        ContextMenuView.show(items, blockSelectItem: { (index, item) -> () in
-            if index == 0 {
-                self.tableView.setEditing(true, animated: true)
-                self.showRightBarButton()
-            }
-            if index == 1 {
-                
-                AlertNameView.show(nil, blockName: { (name) -> () in
-                    if !name.isEmpty {
-                        self.changePositionItems()
-                        var item: TrainingGroupItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingGroupItem) as TrainingGroupItem
-                        item.title = name
-                        if let trainingItem = self.trainingItem {
-                            item.training = trainingItem
-                        }
-                        item.position = 0
-                        
-                        DataManager.save()
-                    }
-                })
-            }
+        AlertSetsView.show(nil, reps: nil, blockValue: { (weight, reps) -> () in
+            
+            var item: SetsItem = DataManager.createItem(nameItem: CoreDataObjectNames.SetsItem) as SetsItem
+            item.weight = weight
+            item.reps = reps
+            item.exercise = self.exerciseItem!
+            item.position = self.fetchedResults!.fetchedObjects!.count
+            
+            DataManager.save()
         })
-    }
-    
-    func clickBtnDone(sender: UIBarButtonItem) {
-        self.tableView.setEditing(false, animated: true)
-        self.showRightBarButton()
     }
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         var sectionInfo = self.fetchedResults!.sections![section] as NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? TrainingGroupCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? SetsCell
         
         if cell == nil {
-            cell = TrainingGroupCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewCell.identifier)
+            cell = SetsCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewCell.identifier)
         }
         
         cell!.setData(self.fetchedResults!.objectAtIndexPath(indexPath))
@@ -166,7 +125,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         
         isMovingItem = true
         
-        if var todos = self.fetchedResults!.fetchedObjects as? [TrainingGroupItem] {
+        if var todos = self.fetchedResults!.fetchedObjects as? [SetsItem] {
             let todo = todos[sourceIndexPath.row]
             todos.removeAtIndex(sourceIndexPath.row)
             todos.insert(todo, atIndex: destinationIndexPath.row)
@@ -190,23 +149,13 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         
         tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
         
-        if self.tableView.editing {
-            if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? TrainingGroupItem {
-                AlertNameView.show(item.title, blockName: { (name) -> () in
-                    if !name.isEmpty {
-                        item.title = name
-                        DataManager.save()
-                    }
-                })
-            }
-        }
-        else {
-            let controller = ExerciseListController()
-            if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? TrainingGroupItem {
-                controller.trainingGroupItem = item
-            }
-            self.navigationController!.navigationBar.tintColor = Utils.colorRed
-            self.navigationController!.pushViewController(controller, animated: true)
+        if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? SetsItem {
+            AlertSetsView.show(item.weight.floatValue, reps: item.reps.integerValue, blockValue: { (weight, reps) -> () in
+                
+                item.weight = weight
+                item.reps = reps
+                DataManager.save()
+            })
         }
     }
     
@@ -237,7 +186,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
             }
         case .Update:
             if let indexPath = indexPath {
-                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? TrainingGroupCell{
+                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? BaseCell{
                     cell.setData(anObject)
                 }
             }
@@ -258,9 +207,4 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         self.tableView.endUpdates()
     }
 
-
 }
-
-
-
-

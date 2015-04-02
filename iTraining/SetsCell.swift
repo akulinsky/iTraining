@@ -1,17 +1,19 @@
 //
-//  TrainingGroupCell.swift
+//  SetsCell.swift
 //  iTraining
 //
-//  Created by Andrey Kulinskiy on 3/26/15.
+//  Created by Andrey Kulinskiy on 3/31/15.
 //  Copyright (c) 2015 Andrey Kulinskiy. All rights reserved.
 //
 
 import UIKit
 
-class TrainingGroupCell: BaseCell {
+class SetsCell: BaseCell {
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.accessoryType = UITableViewCellAccessoryType.None
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -30,8 +32,8 @@ class TrainingGroupCell: BaseCell {
     }
     
     override func setData(data: AnyObject) {
-        if let item = data as? TrainingGroupItem {
-            self.textLabel!.text = item.title
+        if let item = data as? SetsItem {
+            self.textLabel!.text = "\(item.weight) kg x \(item.reps) reps"
         }
     }
 

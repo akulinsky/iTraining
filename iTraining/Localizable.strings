@@ -20,12 +20,44 @@
 "***Delete" = "Delete";
 "***GoTo" = "Go to";
 
+"***Name" = "Name";
+"***Weight" = "Weight";
+"***Reps" = "Reps";
+
 // ContextMenuView
 "***ContextMenuView_Edit" = "Edit";
 "***ContextMenuView_NewTraining" = "New Training";
+"***ContextMenuView_NewTrainingGroup" = "New Training Group";
+"***ContextMenuView_NewExercise" = "New Exercise";
+"***ContextMenuView_NewTitleExercise" = "New Title";
+"***ContextMenuView_EditTitleExercise" = "Edit Title Exercise";
+"***ContextMenuView_EditBreakTime" = "Edit Break Time";
+"***ContextMenuView_EditSets" = "Edit Sets";
+"***ContextMenuView_NewSet" = "New Set";
 
 // TrainingListController
 "***TrainingListController_Title" = "Training List";
 
 // TrainingGroupController
 "***TrainingGroupController_Title" = "Training Group";
+
+// ExerciseListController
+"***ExerciseListController_Title" = "Exercises";
+
+// ExerciseController
+"***ExerciseController_Title" = "Exercise";
+"***ExerciseController_BreakTime" = "Break Time: %@ min";
+"***ExerciseController_BtnBeginExercise" = "Begin Exercise";
+
+// SetsController
+"***SetsController_Title" = "Sets";
+
+// MuscleGroup
+"***MuscleGroup_Chest" = "Chest";
+"***MuscleGroup_Back" = "Back";
+"***MuscleGroup_Biceps" = "Biceps";
+"***MuscleGroup_Triceps" = "Triceps";
+"***MuscleGroup_Shoulders" = "Shoulders";
+"***MuscleGroup_Legs" = "Legs";
+"***MuscleGroup_Abdominals" = "Abdominals";
+

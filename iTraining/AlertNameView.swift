@@ -8,62 +8,23 @@
 
 import UIKit
 
-class AlertNameView: UIView, UITextFieldDelegate {
-
+class AlertNameView: BaseContextView, UITextFieldDelegate {
+    
     // MARK:
     // MARK: property
-    private let windowObj: UIWindow
     var blockName: ( (String) -> () )?
-    private var name: String = ""
-    //private var keyboardSize: CGSize?
     private var keyboardNotification: AKKeyboardNotification?
     
-    private lazy var backgroundView: UIView = {
+    private var name: String? {
         
-        var view: UIView = UIView(frame: self.bounds)
-        view.backgroundColor = UIColor.blackColor()
-        view.alpha = 0.3
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
-        view.hidden = true
+        get {
+            return self.tvName.text
+        }
         
-        return view
-        }()
-    
-    private lazy var contentView: UIView = {
-        
-        let width: CGFloat = 300
-        let height: CGFloat = 200
-        
-        var view: UIView = UIView(frame: CGRectMake((self.frame.size.width - width) / 2, (self.frame.size.height - height) / 2, width, height))
-        view.backgroundColor = UIColorMakeRGB(red: 250, green: 250, blue: 250)
-        view.layer.cornerRadius = 5.0
-        view.layer.borderColor = UIColor.darkGrayColor().CGColor
-        view.layer.borderWidth = 1.0
-        view.layer.masksToBounds = true
-        
-        return view
-        }()
-    
-    private lazy var separatorView: UIView = {
-        
-        var view: UIView = UIView(frame: CGRectMake(0, self.btnDone.frame.origin.y + self.btnDone.frame.size.height + 3, self.contentView.frame.size.width, 1))
-        view.backgroundColor = UIColorMakeRGB(red: 220, green: 225, blue: 230)
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth
-        
-        return view
-        }()
-    
-    private lazy var btnDone: UIButton = {
-        
-        let button = UIButton(frame: CGRectMake(self.contentView.frame.size.width - 75, 5, 60, 30))
-        button.setTitle(NSLocalizedString("***Done", comment:""), forState: UIControlState.Normal)
-        button.setTitleColor(Utils.colorRed, forState: UIControlState.Normal)
-        button.setTitleColor(UIColor.darkGrayColor(), forState: UIControlState.Highlighted)
-        button.backgroundColor = UIColor.clearColor()
-        button.addTarget(self, action: "clickBtnDone:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        return button
-        }()
+        set {
+            self.tvName.text = newValue
+        }
+    }
     
     private lazy var substrateUserView: UIView = {
         
@@ -77,23 +38,24 @@ class AlertNameView: UIView, UITextFieldDelegate {
         }()
     
     private lazy var tvName: UITextField = {
-       
+        
         var text = UITextField(frame: CGRectMake(10, 0, self.substrateUserView.frame.size.width - 20, self.substrateUserView.frame.size.height))
         text.backgroundColor = UIColor.clearColor()
         text.returnKeyType = UIReturnKeyType.Done
         text.autocorrectionType = UITextAutocorrectionType.No
         text.delegate = self
-        text.placeholder = "Name"
+        text.placeholder = NSLocalizedString("***Name", comment:"")
         
         return text
-    }()
+        }()
+    
     
     // MARK:
     // MARK: init
-    init(window: UIWindow) {
-        self.windowObj = window
-        super.init(frame: window.frame)
-        self.setup()
+    override init(window: UIWindow) {
+        
+        super.init(window: window)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceOrientationDidChangeNotification:", name: UIDeviceOrientationDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
@@ -109,32 +71,17 @@ class AlertNameView: UIView, UITextFieldDelegate {
     
     // MARK:
     // MARK: methods
-    private func setup() {
+    override func setup() {
+        super.setup()
         
-        self.addSubview(self.backgroundView)
-        self.addSubview(self.contentView)
-        self.contentView.addSubview(self.btnDone)
-        self.contentView.addSubview(self.separatorView)
         self.contentView.addSubview(self.substrateUserView)
         self.substrateUserView.addSubview(self.tvName)
         
         self.tvName.becomeFirstResponder()
-        
-        self.transform = CGAffineTransformMakeScale(0.01, 0.01)
-        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.transform = CGAffineTransformIdentity
-            }) { (finished) -> Void in
-                self.backgroundView.hidden = false
-        }
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        self.resize()
-    }
-    
-    func resize() {
+    override func resize() {
+        super.resize()
         
         var positionContentViewY = (self.frame.size.height - self.contentView.frame.size.height) / 2
         if self.keyboardNotification != nil {
@@ -145,29 +92,14 @@ class AlertNameView: UIView, UITextFieldDelegate {
         self.contentView.frame = CGRectMake((self.frame.size.width - self.contentView.frame.size.width) / 2, positionContentViewY,
             self.contentView.frame.size.width, self.contentView.frame.size.height)
         
-        self.btnDone.frame = CGRectMake(self.contentView.frame.size.width - 75, 5, 65, 30)
-        self.separatorView.frame = CGRectMake(0, self.btnDone.frame.origin.y + self.btnDone.frame.size.height + 3, self.contentView.frame.size.width, 1)
-        
         self.substrateUserView.frame = CGRectMake(20, self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, self.contentView.frame.size.width - 40, 50)
         self.tvName.frame = CGRectMake(10, 0, self.substrateUserView.frame.size.width - 20, self.substrateUserView.frame.size.height)
     }
     
-    func cancelView() {
-        self.cancelView(name: nil)
-    }
-    
-    func cancelView(#name: String?) {
+    override func willAlertCancel() {
         
-        self.transform = CGAffineTransformIdentity
-        self.backgroundView.hidden = true
-        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.transform = CGAffineTransformMakeScale(0.01, 0.01)
-            }) { (finished) -> Void in
-                self.removeFromSuperview()
-                
-                if self.blockName != nil && name != nil {
-                    self.blockName!(name!)
-                }
+        if self.blockName != nil &&  self.name != nil {
+            self.blockName!(self.name!)
         }
     }
     
@@ -183,16 +115,9 @@ class AlertNameView: UIView, UITextFieldDelegate {
         window.addSubview(contextView)
     }
     
-    // MARK:
-    // MARK: action
-    func clickBtnDone(sender: UIButton) {
-        
-        self.cancelView(name: self.tvName.text)
-    }
-    
     // MARK: - UITextFieldDelegate
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.cancelView(name: self.tvName.text)
+        self.cancelView(true)
         return true
     }
     
@@ -211,7 +136,4 @@ class AlertNameView: UIView, UITextFieldDelegate {
     func keyboardDidHide(notification: NSNotification) {
         self.keyboardNotification = nil
     }
-    
-    
-    
 }
