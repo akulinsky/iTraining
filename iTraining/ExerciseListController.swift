@@ -211,6 +211,17 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         return true
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        
+        if tableView.editing {
+            return true
+        }
+        else if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
+            return true
+        }
+        return false
+    }
+    
     var isMovingItem: Bool = false
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
@@ -252,12 +263,12 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
             }
         }
         else {
-            let controller = ExerciseController()
             if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
+                let controller = ExerciseController()
                 controller.exerciseItem = item
+                self.navigationController?.navigationBar.tintColor = Utils.colorRed
+                self.navigationController!.pushViewController(controller, animated: true)
             }
-            self.navigationController?.navigationBar.tintColor = Utils.colorRed
-            self.navigationController!.pushViewController(controller, animated: true)
         }
     }
     
