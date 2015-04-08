@@ -42,7 +42,7 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
         var text = UITextField(frame: CGRectMake(10, 0, self.substrateUserView.frame.size.width - 20, self.substrateUserView.frame.size.height))
         text.backgroundColor = UIColor.clearColor()
         text.returnKeyType = UIReturnKeyType.Done
-        text.autocorrectionType = UITextAutocorrectionType.No
+        //text.autocorrectionType = UITextAutocorrectionType.No
         text.delegate = self
         text.placeholder = NSLocalizedString("***Name", comment:"")
         
