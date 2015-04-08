@@ -18,7 +18,20 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     private var weight: Float? {
         
         get {
-            return (self.tfWeight.text as NSString).floatValue
+            
+            let numberFormatter = NSNumberFormatter()
+            numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
+            let number: NSNumber? = numberFormatter.numberFromString(self.tfWeight.text)
+            
+            var retVal: Float = 0.0
+            if let number = number {
+                retVal = number.floatValue
+            }
+            else {
+                retVal = (self.tfWeight.text as NSString).floatValue
+            }
+            
+            return retVal
         }
         
         set {
