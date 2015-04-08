@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import LocalAuthentication
 
 class TrainingListController: BaseViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
 
@@ -50,6 +51,8 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         self.view.addSubview(self.tableView)
         
         self.showRightBarButton()
+        
+        self.navigationController?.navigationBar.tintColor = Utils.colorRed
     }
 
     override func didReceiveMemoryWarning() {
@@ -122,11 +125,46 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
                 })
             }
         })
-        
-//        AlertSelectDateView.showDatePicker(mode: UIDatePickerMode.Time, date: nil, minDate: nil, maxDate: nil) { (newDate) -> () in
-//            println(newDate)
-//        }
     }
+    
+//    func authenticate() {
+//        let context = LAContext()
+//        var error: NSError?
+//        
+//        if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+//            context.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "YYYYYYY", reply: { (success, error) -> Void in
+//                
+//                if error != nil {
+//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                        AlertView.showAlert(message: "There was a problem verifying your identity.", cancelFunc: { () -> () in
+//                            
+//                        })
+//                    })
+//                    println(error)
+//                }
+//                
+//                if success {
+//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                        AlertView.showAlert(message: "You are the device owner!", cancelFunc: { () -> () in
+//    
+//                        })
+//                    })
+//                }
+//                else {
+//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+//                        AlertView.showAlert(message: "You are not the device owner.", cancelFunc: { () -> () in
+//                            
+//                        })
+//                    })
+//                }
+//            })
+//        }
+//        else {
+//            AlertView.showAlert(message: "Your device cannot authenticate using TouchID.", cancelFunc: { () -> () in
+//                
+//            })
+//        }
+//    }
     
     func clickBtnDone(sender: UIBarButtonItem) {
         self.tableView.setEditing(false, animated: true)

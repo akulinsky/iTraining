@@ -41,6 +41,8 @@ class ScreenManager:NSObject {
         return object
         }()
     
+    var timer: NSTimer?
+    
     // MARK:
     init? (window: UIWindow?)
     {

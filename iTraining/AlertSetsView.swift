@@ -51,7 +51,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         
         var text: UITextField = UITextField(frame: CGRectZero)
         text.backgroundColor = UIColor.clearColor()
-        text.keyboardType = UIKeyboardType.NumberPad
+        text.keyboardType = UIKeyboardType.DecimalPad
         text.delegate = self
         text.placeholder = NSLocalizedString("***Weight", comment:"")
         

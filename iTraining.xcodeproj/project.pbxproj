@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F626C7771AD3CDF600BE082E /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F626C7761AD3CDF600BE082E /* LocalAuthentication.framework */; };
 		F631FFF41ACC399A0099F051 /* AlertSetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F631FFF31ACC399A0099F051 /* AlertSetsView.swift */; };
 		F63576BD1A9F234700B71A0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63576BC1A9F234700B71A0A /* AppDelegate.swift */; };
 		F63576BF1A9F234700B71A0A /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63576BE1A9F234700B71A0A /* NavigationController.swift */; };
@@ -72,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F626C7761AD3CDF600BE082E /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		F631FFF31ACC399A0099F051 /* AlertSetsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertSetsView.swift; sourceTree = "<group>"; };
 		F63576B71A9F234700B71A0A /* iTraining.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTraining.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F63576BB1A9F234700B71A0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F626C7771AD3CDF600BE082E /* LocalAuthentication.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +158,7 @@
 		F63576AE1A9F234700B71A0A = {
 			isa = PBXGroup;
 			children = (
+				F626C7761AD3CDF600BE082E /* LocalAuthentication.framework */,
 				F63576B91A9F234700B71A0A /* iTraining */,
 				F63576CF1A9F234800B71A0A /* iTrainingTests */,
 				F63576B81A9F234700B71A0A /* Products */,
@@ -227,6 +231,7 @@
 				F6E684F41AC31F5400568ABF /* AlertNameView.swift */,
 				F67C63391ACAFE91006873BF /* AlertSelectBreakTime.swift */,
 				F631FFF31ACC399A0099F051 /* AlertSetsView.swift */,
+				F64729631AC1CB0E00383D63 /* ContextMenuView.swift */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -296,7 +301,6 @@
 		F6DE2A831AA88D5C006C8103 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				F64729631AC1CB0E00383D63 /* ContextMenuView.swift */,
 				F6DE2A811AA88D2E006C8103 /* EnumsData.swift */,
 				F6DE2A841AA88E37006C8103 /* ConstData.swift */,
 				F6DE2A861AA88E7E006C8103 /* Utils.swift */,
