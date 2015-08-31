@@ -104,7 +104,7 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     }
     
     class func show(name: String?, blockName: ( (name: String) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as UIWindow
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
         var contextView = AlertNameView(window: window)
         contextView.blockName = blockName
         

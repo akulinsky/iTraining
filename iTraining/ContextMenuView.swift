@@ -161,7 +161,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     class func show(items: [String], blockSelectItem: ( (index: Int, item: String) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as UIWindow
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
         var contextView = ContextMenuView(window: window)
         contextView.blockSelectItem = blockSelectItem
         contextView.setItems(items)

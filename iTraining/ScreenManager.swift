@@ -14,8 +14,8 @@ class ScreenManager:NSObject {
     
     // MARK:
     // MARK: property
-    let window: UIWindow?
-    let navigationController: NavigationController?
+    var window: UIWindow? = nil
+    var navigationController: NavigationController? = nil
     
     private lazy var mainScreen: MainViewController = {
         
@@ -57,6 +57,8 @@ class ScreenManager:NSObject {
         self.navigationController!.navigationBar.shadowImage = UIImage()
         self.navigationController!.navigationBar.translucent = false
         self.navigationController!.navigationBarHidden = true
+        
+        
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
         
         subscribeToEvents()

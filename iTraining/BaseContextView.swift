@@ -138,7 +138,7 @@ class BaseContextView: UIView {
     }
     
     class func show() -> BaseContextView {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as UIWindow
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
         var contextView = BaseContextView(window: window)
         
         window.addSubview(contextView)

@@ -34,7 +34,7 @@ class DataManager {
         fetchRequest.entity = entity
         var array = self.managedObject!.executeFetchRequest(fetchRequest, error: nil)
         for obj in array! {
-            self.managedObject?.deleteObject(obj as NSManagedObject)
+            self.managedObject?.deleteObject(obj as! NSManagedObject)
         }
     }
     
@@ -56,7 +56,7 @@ class DataManager {
     
     class func createItem(#nameItem: String) -> NSManagedObject {
         let item: AnyObject = NSEntityDescription .insertNewObjectForEntityForName(nameItem, inManagedObjectContext: DataContainer.sharedInstance.dataManager.managedObject!)
-        return item as NSManagedObject
+        return item as! NSManagedObject
     }
     
     class func addItem(item: NSManagedObject) {

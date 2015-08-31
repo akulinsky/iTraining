@@ -126,7 +126,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         let sec: Int = self.exerciseItem!.breakTime.integerValue % 60
         let strBreakTime = NSString(format: "%d.%02d", min, sec)
         var str = NSString(format: NSLocalizedString("***ExerciseController_BreakTime", comment:""), strBreakTime)
-        self.lblBreakTime.text = NSLocalizedString(str, comment:"")
+        self.lblBreakTime.text = NSLocalizedString(str as String, comment:"")
     }
     
     // MARK: - Action
@@ -169,7 +169,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var sectionInfo = self.fetchedResults!.sections![section] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     

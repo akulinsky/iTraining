@@ -81,7 +81,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
         
         var index = 1
         for item in sectionInfo.objects {
@@ -118,7 +118,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: TrainingGroupItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingGroupItem) as TrainingGroupItem
+                        var item: TrainingGroupItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingGroupItem) as! TrainingGroupItem
                         item.title = name
                         if let trainingItem = self.trainingItem {
                             item.training = trainingItem
@@ -139,7 +139,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var sectionInfo = self.fetchedResults!.sections![section] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     
@@ -182,7 +182,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as NSManagedObject)
+            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as! NSManagedObject)
         }
     }
     

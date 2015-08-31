@@ -59,7 +59,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
         
         var index = 1
         for item in sectionInfo.objects {
@@ -85,7 +85,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         
         AlertSetsView.show(nil, reps: nil, blockValue: { (weight, reps) -> () in
             
-            var item: SetsItem = DataManager.createItem(nameItem: CoreDataObjectNames.SetsItem) as SetsItem
+            var item: SetsItem = DataManager.createItem(nameItem: CoreDataObjectNames.SetsItem) as! SetsItem
             item.weight = weight
             item.reps = reps
             item.exercise = self.exerciseItem!
@@ -98,7 +98,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var sectionInfo = self.fetchedResults!.sections![section] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     
@@ -141,7 +141,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as NSManagedObject)
+            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as! NSManagedObject)
         }
     }
     

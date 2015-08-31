@@ -14,8 +14,8 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
     // MARK: property
     var blockValue: ( (NSTimeInterval) -> () )?
     
-    private let arrMinutes: [String] = []
-    private let arrSeconds: [String] = []
+    private var arrMinutes: [String] = []
+    private var arrSeconds: [String] = []
     
     private var selectIndexMinute: Int = 0
     private var selectIndexSecond: Int = 30 / 5
@@ -119,7 +119,7 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
     }
     
     class func show(value: NSTimeInterval?, blockValue: ( (value: NSTimeInterval) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as UIWindow
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
         var contextView = AlertSelectBreakTime(window: window)
         contextView.blockValue = blockValue
         

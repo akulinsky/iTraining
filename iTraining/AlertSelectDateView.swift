@@ -120,7 +120,7 @@ class AlertSelectDateView: UIView {
     }
     
     class func showDatePicker(#mode: UIDatePickerMode, date: NSDate?, minDate: NSDate?, maxDate: NSDate?, blockSelectDate: ( (NSDate) -> () ) ) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as UIWindow
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
         var alertSelectDateView = AlertSelectDateView(window: window)
         alertSelectDateView.blockSelectDate = blockSelectDate
         alertSelectDateView.datePicker.datePickerMode = mode

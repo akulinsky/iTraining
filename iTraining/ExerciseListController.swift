@@ -84,7 +84,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
         
         var index = 1
         for item in sectionInfo.objects {
@@ -123,7 +123,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: ExerciseItem = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseItem) as ExerciseItem
+                        var item: ExerciseItem = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseItem) as! ExerciseItem
                         item.title = name
                         if let trainingGroupItem = self.trainingGroupItem {
                             item.trainingGroup = trainingGroupItem
@@ -139,7 +139,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: ExerciseTitle = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseTitle) as ExerciseTitle
+                        var item: ExerciseTitle = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseTitle) as! ExerciseTitle
                         item.title = name
                         if let trainingGroupItem = self.trainingGroupItem {
                             item.trainingGroup = trainingGroupItem
@@ -161,7 +161,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var sectionInfo = self.fetchedResults!.sections![section] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     
@@ -244,7 +244,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as NSManagedObject)
+            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as! NSManagedObject)
         }
     }
     

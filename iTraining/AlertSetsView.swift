@@ -175,7 +175,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     }
     
     class func show(weight: Float?, reps: Int?, blockValue: ( (weight: Float, reps: Int) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as UIWindow
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
         var contextView = AlertSetsView(window: window)
         contextView.blockValue = blockValue
         

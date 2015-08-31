@@ -641,7 +641,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d02bdfae-bb95-44ab-8743-6b57b403ab69";
+				PROVISIONING_PROFILE = "70f46a12-2c59-4292-bebe-af2b2bcd5a1b";
 				SWIFT_OBJC_BRIDGING_HEADER = "iTraining/iTraining-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -663,7 +663,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d02bdfae-bb95-44ab-8743-6b57b403ab69";
+				PROVISIONING_PROFILE = "70f46a12-2c59-4292-bebe-af2b2bcd5a1b";
 				SWIFT_OBJC_BRIDGING_HEADER = "iTraining/iTraining-Bridging-Header.h";
 			};
 			name = Release;

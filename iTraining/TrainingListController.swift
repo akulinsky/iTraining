@@ -79,7 +79,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
         
         var index = 1
         for item in sectionInfo.objects {
@@ -116,7 +116,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: TrainingItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingItem) as TrainingItem
+                        var item: TrainingItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingItem) as! TrainingItem
                         item.title = name
                         item.position = self.fetchedResults!.fetchedObjects!.count
                         
@@ -174,7 +174,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var sectionInfo = self.fetchedResults!.sections![section] as NSFetchedResultsSectionInfo
+        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     
@@ -221,7 +221,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
         if editingStyle == UITableViewCellEditingStyle.Delete {
-            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as NSManagedObject)
+            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as! NSManagedObject)
         }
     }
     
