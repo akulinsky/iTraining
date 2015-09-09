@@ -33,7 +33,9 @@ class BaseViewController: UIViewController {
     
     var heightStatusBar: CGFloat {
         get {
-            return (self.interfaceOrientation.isPortrait) ? UIApplication.sharedApplication().statusBarFrame.size.height : UIApplication.sharedApplication().statusBarFrame.size.width
+            return (UIApplication.sharedApplication().statusBarOrientation == UIInterfaceOrientation.Portrait ||
+                UIApplication.sharedApplication().statusBarOrientation == UIInterfaceOrientation.PortraitUpsideDown)
+                ? UIApplication.sharedApplication().statusBarFrame.size.height : UIApplication.sharedApplication().statusBarFrame.size.width
         }
     }
     
