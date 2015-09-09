@@ -63,7 +63,6 @@ class ScreenManager:NSObject {
         
         subscribeToEvents()
         showMainScreenAnimation(false)
-        println("test555")
     }
     
     deinit {
