@@ -61,7 +61,7 @@ class BaseViewController: UIViewController {
             
             var bottomLine: UIView = UIView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.size.height - 1, self.navigationController!.navigationBar.frame.size.width, 1))
             bottomLine.backgroundColor = UIColorMakeRGB(red: 229, green: 229, blue: 229)
-            bottomLine.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleTopMargin
+            bottomLine.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleTopMargin]
             view.addSubview(bottomLine)
         }
         

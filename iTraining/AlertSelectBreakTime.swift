@@ -77,7 +77,7 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
         super.init(window: window)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -119,8 +119,8 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
     }
     
     class func show(value: NSTimeInterval?, blockValue: ( (value: NSTimeInterval) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
-        var contextView = AlertSelectBreakTime(window: window)
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+        let contextView = AlertSelectBreakTime(window: window)
         contextView.blockValue = blockValue
         
         if let oldValue = value {

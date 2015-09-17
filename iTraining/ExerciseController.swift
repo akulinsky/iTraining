@@ -25,7 +25,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         object.dataSource = self
         object.backgroundColor = UIColor.clearColor()
         object.separatorStyle = UITableViewCellSeparatorStyle.None
-        object.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleWidth
+        object.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
@@ -82,7 +82,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         
         var bottomLine: UIView = UIView(frame: CGRectMake(0, self.btnBeginExercise.edgeY + 10, self.view.frame.size.width, 1))
         bottomLine.backgroundColor = UIColorMakeRGB(red: 229, green: 229, blue: 229)
-        bottomLine.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleTopMargin
+        bottomLine.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleTopMargin]
         return bottomLine
         }()
     
@@ -125,7 +125,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         let min: Int = self.exerciseItem!.breakTime.integerValue / 60
         let sec: Int = self.exerciseItem!.breakTime.integerValue % 60
         let strBreakTime = NSString(format: "%d.%02d", min, sec)
-        var str = NSString(format: NSLocalizedString("***ExerciseController_BreakTime", comment:""), strBreakTime)
+        let str = NSString(format: NSLocalizedString("***ExerciseController_BreakTime", comment:""), strBreakTime)
         self.lblBreakTime.text = NSLocalizedString(str as String, comment:"")
     }
     
@@ -164,12 +164,12 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     }
     
     func clickBtnBeginExercise(sender: UIButton) {
-        println("clickBtnBeginExercise")
+        print("clickBtnBeginExercise")
     }
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
@@ -188,7 +188,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
         
         if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? SetsItem {
             AlertSetsView.show(item.weight.floatValue, reps: item.reps.integerValue, blockValue: { (weight, reps) -> () in

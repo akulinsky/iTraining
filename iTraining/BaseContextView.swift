@@ -19,7 +19,7 @@ class BaseContextView: UIView {
         var view: UIView = UIView(frame: self.bounds)
         view.backgroundColor = UIColor.blackColor()
         view.alpha = 0.3
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         view.hidden = true
         
         return view
@@ -82,7 +82,7 @@ class BaseContextView: UIView {
         self.setup()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -138,8 +138,8 @@ class BaseContextView: UIView {
     }
     
     class func show() -> BaseContextView {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
-        var contextView = BaseContextView(window: window)
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+        let contextView = BaseContextView(window: window)
         
         window.addSubview(contextView)
         

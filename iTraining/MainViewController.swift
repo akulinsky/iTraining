@@ -31,7 +31,7 @@ class MainViewController: JASidePanelController {
     }
     
     override func leftButtonForCenterPanel() -> UIBarButtonItem! {
-        var button = super.leftButtonForCenterPanel()
+        let button = super.leftButtonForCenterPanel()
         button.tintColor = Utils.colorRed
         return button
     }

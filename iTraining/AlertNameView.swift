@@ -61,7 +61,7 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -104,8 +104,8 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     }
     
     class func show(name: String?, blockName: ( (name: String) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
-        var contextView = AlertNameView(window: window)
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+        let contextView = AlertNameView(window: window)
         contextView.blockName = blockName
         
         if let oldName = name {

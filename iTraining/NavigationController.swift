@@ -24,7 +24,7 @@ class NavigationController: UINavigationController {
     
     func someSelector() {
         AlertView.showAlert(message: "Hi Alert View") { () -> () in
-            print("cancel Alert View")
+            print("cancel Alert View", terminator: "")
         }
 //        AlertView.showAlert(title: "", message: "dfgdfhdfh", titleCancelButton: "Cancel", titleOkButton: "Send", cancelFunc: { () -> () in
 //            print("cancel")

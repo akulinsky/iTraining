@@ -48,7 +48,7 @@ class ScreenManager:NSObject {
     {
         super.init()
         if window == nil {
-            println("ScreenManager: Error UIWindow == nil")
+            print("ScreenManager: Error UIWindow == nil")
             return nil
         }
         self.window = window
@@ -85,7 +85,7 @@ class ScreenManager:NSObject {
         let visibleViewController = self.navigationController!.visibleViewController
         
         if topViewController != visibleViewController {
-            topViewController .dismissViewControllerAnimated(true, completion: nil)
+            topViewController!.dismissViewControllerAnimated(true, completion: nil)
         }
         
         if topViewController != self.mainScreen {
@@ -94,7 +94,7 @@ class ScreenManager:NSObject {
             var thereMainScreen: Bool = false
             for item in controllers {
                 
-                let controller: UIViewController? = item as? UIViewController
+                let controller: UIViewController? = item
                 if controller != nil && controller == self.mainScreen {
                     thereMainScreen = true
                     break
@@ -116,7 +116,7 @@ class ScreenManager:NSObject {
     }
     
     private func navigationControllerForViewController(viewController: UIViewController) -> UINavigationController {
-        var navigation = UINavigationController(rootViewController: viewController)
+        let navigation = UINavigationController(rootViewController: viewController)
         navigation.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         navigation.navigationBar.shadowImage = UIImage()
         navigation.navigationBar.translucent = true
@@ -131,15 +131,15 @@ class ScreenManager:NSObject {
     }
     
     func showSettingScreenNotification(notification: NSNotification) {
-        println("showSettingScreenNotification")
+        print("showSettingScreenNotification")
     }
     
     func applicationDidEnterBackground(notification: NSNotification) {
-        println("applicationDidEnterBackground")
+        print("applicationDidEnterBackground")
     }
     
     func applicationDidEnterForeground(notification: NSNotification) {
-        println("applicationDidEnterForeground")
+        print("applicationDidEnterForeground")
     }
 }
 

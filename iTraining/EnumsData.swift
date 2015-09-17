@@ -31,8 +31,6 @@ enum MuscleGroup: Int {
             strName = NSLocalizedString("***MuscleGroup_Legs", comment:"")
         case .Abdominals:
             strName = NSLocalizedString("***MuscleGroup_Abdominals", comment:"")
-        default:
-            strName = "empty"
         }
         
         return strName

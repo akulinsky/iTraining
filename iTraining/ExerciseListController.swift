@@ -26,7 +26,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         object.dataSource = self
         object.backgroundColor = UIColor.clearColor()
         object.separatorStyle = UITableViewCellSeparatorStyle.None
-        object.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleWidth
+        object.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
@@ -84,10 +84,10 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![0]
         
         var index = 1
-        for item in sectionInfo.objects {
+        for item in sectionInfo.objects! {
             
             if let obj = item as? BaseItem {
                 obj.position = index
@@ -123,7 +123,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: ExerciseItem = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseItem) as! ExerciseItem
+                        let item: ExerciseItem = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseItem) as! ExerciseItem
                         item.title = name
                         if let trainingGroupItem = self.trainingGroupItem {
                             item.trainingGroup = trainingGroupItem
@@ -139,7 +139,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: ExerciseTitle = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseTitle) as! ExerciseTitle
+                        let item: ExerciseTitle = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseTitle) as! ExerciseTitle
                         item.title = name
                         if let trainingGroupItem = self.trainingGroupItem {
                             item.trainingGroup = trainingGroupItem
@@ -161,7 +161,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
@@ -172,7 +172,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         //var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? BaseCell
         var cell: BaseCell?
         
-        if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
+        if let _ = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
             cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? BaseCell
         }
         else {
@@ -181,7 +181,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         
         if cell == nil {
             
-            if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
+            if let _ = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
                 cell = ExerciseListCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewCell.identifier)
             }
             else {
@@ -200,7 +200,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         if self.tableView.editing {
             heightCell = self.heightExerciseCell
         }
-        else if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
+        else if let _ = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
             heightCell = self.heightExerciseCell
         }
         
@@ -216,7 +216,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         if tableView.editing {
             return true
         }
-        else if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
+        else if let _ = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
             return true
         }
         return false
@@ -250,7 +250,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
         
         if self.tableView.editing {
             if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? BaseItem {

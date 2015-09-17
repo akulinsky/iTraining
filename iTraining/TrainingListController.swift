@@ -23,7 +23,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         object.dataSource = self
         object.backgroundColor = UIColor.clearColor()
         object.separatorStyle = UITableViewCellSeparatorStyle.None
-        object.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleWidth
+        object.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
@@ -79,10 +79,10 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![0] 
         
         var index = 1
-        for item in sectionInfo.objects {
+        for item in sectionInfo.objects! {
             
             if let obj = item as? TrainingItem {
                 obj.position = index
@@ -116,7 +116,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: TrainingItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingItem) as! TrainingItem
+                        let item: TrainingItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingItem) as! TrainingItem
                         item.title = name
                         item.position = self.fetchedResults!.fetchedObjects!.count
                         
@@ -174,7 +174,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
@@ -227,7 +227,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
         
         if self.tableView.editing {
             if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? TrainingItem {

@@ -23,7 +23,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         object.dataSource = self
         object.backgroundColor = UIColor.clearColor()
         object.separatorStyle = UITableViewCellSeparatorStyle.None
-        object.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleWidth
+        object.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
@@ -81,10 +81,10 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![0] 
         
         var index = 1
-        for item in sectionInfo.objects {
+        for item in sectionInfo.objects! {
             
             if let obj = item as? TrainingGroupItem {
                 obj.position = index
@@ -118,7 +118,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
                         //self.changePositionItems()
-                        var item: TrainingGroupItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingGroupItem) as! TrainingGroupItem
+                        let item: TrainingGroupItem = DataManager.createItem(nameItem: CoreDataObjectNames.TrainingGroupItem) as! TrainingGroupItem
                         item.title = name
                         if let trainingItem = self.trainingItem {
                             item.training = trainingItem
@@ -139,7 +139,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
@@ -188,7 +188,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
         
         if self.tableView.editing {
             if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? TrainingGroupItem {
@@ -212,6 +212,7 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
     
     // MARK:
     // MARK: NSFetchedResultsController Delegate
+    
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
         if isMovingItem {

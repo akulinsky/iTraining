@@ -86,7 +86,7 @@ class Utils {
     
     class func stringFromDate(date: NSDate?, format: String) -> String {
         if format.isEmpty || date == nil {
-            print("Util stringFromDate error: format.isEmpty || date == nil")
+            print("Util stringFromDate error: format.isEmpty || date == nil", terminator: "")
             return ""
         }
         
@@ -98,7 +98,7 @@ class Utils {
     }
     
     class func stringFromClass(anyClass: AnyClass) -> String {
-        var classString = NSStringFromClass(anyClass)
+        let classString = NSStringFromClass(anyClass)
         let classArray:Array<String> = classString.componentsSeparatedByString(".")
         let className = classArray.last!
         return className
@@ -111,12 +111,12 @@ class Utils {
     }
 }
 
-func UIColorMakeRGBAlpha(#red: Float, #green: Float, #blue: Float, #alpha: Float) -> UIColor {
+func UIColorMakeRGBAlpha(red red: Float, green: Float, blue: Float, alpha: Float) -> UIColor {
     var tmp = CGFloat(blue/255.0)
     return UIColor(red: CGFloat(red / 255.0), green: CGFloat(green / 255.0), blue: CGFloat(blue / 255.0), alpha: CGFloat(alpha))
 }
 
-func UIColorMakeRGB(#red: Float, #green: Float, #blue: Float) -> UIColor {
+func UIColorMakeRGB(red red: Float, green: Float, blue: Float) -> UIColor {
     return UIColorMakeRGBAlpha(red: red, green: green, blue: blue, alpha: 1.0)
 }
 

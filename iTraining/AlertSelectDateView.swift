@@ -20,7 +20,7 @@ class AlertSelectDateView: UIView {
         var view: UIView = UIView(frame: self.bounds)
         view.backgroundColor = UIColor.blackColor()
         view.alpha = 0.3
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         view.hidden = true
         
         return view
@@ -80,7 +80,7 @@ class AlertSelectDateView: UIView {
         self.setup()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -119,9 +119,9 @@ class AlertSelectDateView: UIView {
         self.datePicker.frame = CGRectMake(10, self.separatorView.frame.origin.y + self.separatorView.frame.size.height + 15, self.contentView.frame.size.width - 20, 50)
     }
     
-    class func showDatePicker(#mode: UIDatePickerMode, date: NSDate?, minDate: NSDate?, maxDate: NSDate?, blockSelectDate: ( (NSDate) -> () ) ) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
-        var alertSelectDateView = AlertSelectDateView(window: window)
+    class func showDatePicker(mode mode: UIDatePickerMode, date: NSDate?, minDate: NSDate?, maxDate: NSDate?, blockSelectDate: ( (NSDate) -> () ) ) {
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+        let alertSelectDateView = AlertSelectDateView(window: window)
         alertSelectDateView.blockSelectDate = blockSelectDate
         alertSelectDateView.datePicker.datePickerMode = mode
         
@@ -157,7 +157,7 @@ class AlertSelectDateView: UIView {
     }
     
     func resultDatePicker(sender: UIDatePicker) {
-        println(sender.date)
+        print(sender.date)
     }
     
     // MARK: - Notification

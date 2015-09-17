@@ -21,14 +21,14 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
             
             let numberFormatter = NSNumberFormatter()
             numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-            let number: NSNumber? = numberFormatter.numberFromString(self.tfWeight.text)
+            let number: NSNumber? = numberFormatter.numberFromString(self.tfWeight.text!)
             
             var retVal: Float = 0.0
             if let number = number {
                 retVal = number.floatValue
             }
             else {
-                retVal = (self.tfWeight.text as NSString).floatValue
+                retVal = (self.tfWeight.text! as NSString).floatValue
             }
             
             return retVal
@@ -42,7 +42,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     private var reps: Int? {
         
         get {
-            return (self.tfReps.text as NSString).integerValue
+            return (self.tfReps.text! as NSString).integerValue
         }
         
         set {
@@ -119,7 +119,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "textDidChangeNotification:", name: UITextFieldTextDidChangeNotification, object: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -175,8 +175,8 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     }
     
     class func show(weight: Float?, reps: Int?, blockValue: ( (weight: Float, reps: Int) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
-        var contextView = AlertSetsView(window: window)
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+        let contextView = AlertSetsView(window: window)
         contextView.blockValue = blockValue
         
         if let weight = weight {
@@ -193,7 +193,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     }
     
     func reloadData() {
-        if self.tfWeight.text != nil && self.tfReps.text != nil && (self.tfWeight.text as NSString).floatValue > 0.0 && self.tfReps.text.toInt() > 0 {
+        if self.tfWeight.text != nil && self.tfReps.text != nil && (self.tfWeight.text! as NSString).floatValue > 0.0 && Int(self.tfReps.text!) > 0 {
             self.btnDone.enabled = true
         }
         else {

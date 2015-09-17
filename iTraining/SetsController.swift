@@ -23,7 +23,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         object.dataSource = self
         object.backgroundColor = UIColor.clearColor()
         object.separatorStyle = UITableViewCellSeparatorStyle.None
-        object.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleWidth
+        object.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleWidth]
         object.allowsSelectionDuringEditing = true
         object.editing = true
         
@@ -59,10 +59,10 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     private func changePositionItems() {
         
-        var sectionInfo = self.fetchedResults!.sections![0] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![0] 
         
         var index = 1
-        for item in sectionInfo.objects {
+        for item in sectionInfo.objects! {
             
             if let obj = item as? SetsItem {
                 obj.position = index
@@ -85,7 +85,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         
         AlertSetsView.show(nil, reps: nil, blockValue: { (weight, reps) -> () in
             
-            var item: SetsItem = DataManager.createItem(nameItem: CoreDataObjectNames.SetsItem) as! SetsItem
+            let item: SetsItem = DataManager.createItem(nameItem: CoreDataObjectNames.SetsItem) as! SetsItem
             item.weight = weight
             item.reps = reps
             item.exercise = self.exerciseItem!
@@ -98,7 +98,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     // MARK: - UITableViewDataSource
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var sectionInfo = self.fetchedResults!.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResults!.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
@@ -147,7 +147,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
         
         if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? SetsItem {
             AlertSetsView.show(item.weight.floatValue, reps: item.reps.integerValue, blockValue: { (weight, reps) -> () in

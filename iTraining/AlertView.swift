@@ -34,7 +34,7 @@ class AlertView: NSObject, UIAlertViewDelegate {
     
     // MARK:
     // MARK: Methods
-    class func showAlert(#message: String, cancelFunc: ( () -> () )) {
+    class func showAlert(message message: String, cancelFunc: ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
         alertView.alertView = UIAlertView(title: nil, message: message, delegate: alertView, cancelButtonTitle: NSLocalizedString("***Ok", comment:""))
@@ -42,7 +42,7 @@ class AlertView: NSObject, UIAlertViewDelegate {
         alertView.alertView!.show()
     }
     
-    class func showAlert(#title: String, message: String, cancelFunc: ( () -> () )) {
+    class func showAlert(title title: String, message: String, cancelFunc: ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
         alertView.alertView = UIAlertView(title: title, message: message, delegate: alertView, cancelButtonTitle: NSLocalizedString("***Ok", comment:""))
@@ -50,7 +50,7 @@ class AlertView: NSObject, UIAlertViewDelegate {
         alertView.alertView!.show()
     }
     
-    class func showAlert(#title: String, message: String, titleCancelButton: String, titleOkButton: String, cancelFunc: ( () -> () ), okFunc: ( () -> () )) {
+    class func showAlert(title title: String, message: String, titleCancelButton: String, titleOkButton: String, cancelFunc: ( () -> () ), okFunc: ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
         alertView.alertView = UIAlertView(title: title, message: message, delegate: alertView, cancelButtonTitle: titleCancelButton, otherButtonTitles:titleOkButton)

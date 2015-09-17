@@ -22,7 +22,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         var view: UIView = UIView(frame: self.bounds)
         view.backgroundColor = UIColor.blackColor()
         view.alpha = 0.3
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         view.hidden = true
         
         return view
@@ -86,7 +86,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceOrientationDidChangeNotification:", name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -145,7 +145,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.cancelView(index: nil, itemName: nil)
     }
     
-    func cancelView(#index: Int?, itemName: String?) {
+    func cancelView(index index: Int?, itemName: String?) {
         
         self.transform = CGAffineTransformIdentity
         self.backgroundView.hidden = true
@@ -161,8 +161,8 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     class func show(items: [String], blockSelectItem: ( (index: Int, item: String) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] as! UIWindow
-        var contextView = ContextMenuView(window: window)
+        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+        let contextView = ContextMenuView(window: window)
         contextView.blockSelectItem = blockSelectItem
         contextView.setItems(items)
         
@@ -183,7 +183,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier)
         
         if cell == nil {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewCell.identifier)
@@ -202,9 +202,9 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: true)
+        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
         
-        delay(0.1, { () -> () in
+        delay(0.1, closure: { () -> () in
             self.cancelView(index: indexPath.row, itemName: self.items[indexPath.row])
         })
     }
