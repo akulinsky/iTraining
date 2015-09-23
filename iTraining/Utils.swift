@@ -112,7 +112,6 @@ class Utils {
 }
 
 func UIColorMakeRGBAlpha(red red: Float, green: Float, blue: Float, alpha: Float) -> UIColor {
-    var tmp = CGFloat(blue/255.0)
     return UIColor(red: CGFloat(red / 255.0), green: CGFloat(green / 255.0), blue: CGFloat(blue / 255.0), alpha: CGFloat(alpha))
 }
 
