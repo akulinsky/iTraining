@@ -58,6 +58,7 @@ class ScreenManager:NSObject {
         self.navigationController!.navigationBar.isTranslucent = false
         self.navigationController!.isNavigationBarHidden = true
         
+        UIApplication.shared.statusBarStyle = .lightContent
         subscribeToEvents()
         showMainScreenAnimation(false)
     }
