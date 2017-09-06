@@ -12,7 +12,7 @@ import CoreData
 class SetsItem: NSManagedObject {
 
     @NSManaged var reps: NSNumber
-    @NSManaged var time: NSDate
+    @NSManaged var time: Date
     @NSManaged var weight: NSNumber
     @NSManaged var exercise: ExerciseItem
     @NSManaged var position: NSNumber

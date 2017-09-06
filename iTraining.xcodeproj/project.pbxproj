@@ -410,9 +410,11 @@
 					F63576B61A9F234700B71A0A = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = Q383P73MVG;
+						LastSwiftMigration = 0830;
 					};
 					F63576CB1A9F234800B71A0A = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0830;
 						TestTargetID = F63576B61A9F234700B71A0A;
 					};
 				};
@@ -634,20 +636,24 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrey Kulinskiy (Y4DK9LBLWS)";
+				DEVELOPMENT_TEAM = Q383P73MVG;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/iTraining",
 				);
 				INFOPLIST_FILE = iTraining/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mwdn.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "458c2ca9-0181-4686-8678-904dd779195a";
+				PROVISIONING_PROFILE = "ed316c2f-0bc1-471a-b52e-577a8049ae12";
+				PROVISIONING_PROFILE_SPECIFIER = "For all applications";
 				SWIFT_OBJC_BRIDGING_HEADER = "iTraining/iTraining-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -657,19 +663,23 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrey Kulinskiy (Y4DK9LBLWS)";
+				DEVELOPMENT_TEAM = Q383P73MVG;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/iTraining",
 				);
 				INFOPLIST_FILE = iTraining/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mwdn.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "458c2ca9-0181-4686-8678-904dd779195a";
+				PROVISIONING_PROFILE = "ed316c2f-0bc1-471a-b52e-577a8049ae12";
+				PROVISIONING_PROFILE_SPECIFIER = "For all applications";
 				SWIFT_OBJC_BRIDGING_HEADER = "iTraining/iTraining-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -687,6 +697,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mwdn.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iTraining.app/iTraining";
 			};
 			name = Debug;
@@ -701,6 +712,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.mwdn.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iTraining.app/iTraining";
 			};
 			name = Release;

@@ -13,76 +13,76 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
 
     // MARK:
     // MARK: property
-    private var fetchedResults: NSFetchedResultsController?
+    fileprivate var fetchedResults: NSFetchedResultsController<NSFetchRequestResult>?
     var exerciseItem: ExerciseItem?
     
-    private lazy var tableView: UITableView = {
+    fileprivate lazy var tableView: UITableView = {
         
-        var object: UITableView = UITableView(frame: CGRectMake(0, self.bottomLineView.edgeY,
-                                                self.view.frame.size.width, self.view.frame.size.height - self.bottomLineView.edgeY),
-                                                style: UITableViewStyle.Plain)
+        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.bottomLineView.edgeY,
+                                                width: self.view.frame.size.width, height: self.view.frame.size.height - self.bottomLineView.edgeY),
+                                                style: UITableViewStyle.plain)
         object.delegate = self
         object.dataSource = self
-        object.backgroundColor = UIColor.clearColor()
-        object.separatorStyle = UITableViewCellSeparatorStyle.None
-        object.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleWidth]
+        object.backgroundColor = UIColor.clear
+        object.separatorStyle = UITableViewCellSeparatorStyle.none
+        object.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
         }()
     
-    private lazy var btnOption: UIButton = {
+    fileprivate lazy var btnOption: UIButton = {
         
-        let button = UIButton(frame: CGRectMake(0, 0, 30, 40))
-        button.setImage(UIImage(named: "dots-hor_red"), forState: UIControlState.Normal)
-        button.setImage(UIImage(named: "dots-hor"), forState: UIControlState.Highlighted)
-        button.addTarget(self, action: "clickBtnOption:", forControlEvents: UIControlEvents.TouchUpInside)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 40))
+        button.setImage(UIImage(named: "dots-hor_red"), for: UIControlState())
+        button.setImage(UIImage(named: "dots-hor"), for: UIControlState.highlighted)
+        button.addTarget(self, action: #selector(ExerciseController.clickBtnOption(_:)), for: UIControlEvents.touchUpInside)
         
         return button
         }()
     
-    private lazy var lblTitle: UILabel = {
+    fileprivate lazy var lblTitle: UILabel = {
        
-        let label: UILabel = UILabel(frame: CGRectMake(20, self.heightHeader + 5, self.view.frame.width - 40, 38))
-        label.backgroundColor = UIColor.clearColor()
+        let label: UILabel = UILabel(frame: CGRect(x: 20, y: self.heightHeader + 5, width: self.view.frame.width - 40, height: 38))
+        label.backgroundColor = UIColor.clear
         label.textColor = Utils.colorDarkText
-        label.font = UIFont.boldSystemFontOfSize(20)
-        label.textAlignment = NSTextAlignment.Left
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.textAlignment = NSTextAlignment.left
         label.adjustsFontSizeToFitWidth = true
         label.text = "Empty"
         
         return label
     }()
     
-    private lazy var lblBreakTime: UILabel = {
+    fileprivate lazy var lblBreakTime: UILabel = {
         
-        let label: UILabel = UILabel(frame: CGRectMake(20, self.lblTitle.edgeY, self.view.frame.width - 40, 30))
-        label.backgroundColor = UIColor.clearColor()
+        let label: UILabel = UILabel(frame: CGRect(x: 20, y: self.lblTitle.edgeY, width: self.view.frame.width - 40, height: 30))
+        label.backgroundColor = UIColor.clear
         label.textColor = Utils.colorDarkText
-        label.font = UIFont.systemFontOfSize(16)
-        label.textAlignment = NSTextAlignment.Left
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textAlignment = NSTextAlignment.left
         label.text = "BreakTime Empty"
         
         return label
         }()
     
-    private lazy var btnBeginExercise: UIButton = {
+    fileprivate lazy var btnBeginExercise: UIButton = {
         
-        let button: UIButton = UIButton(frame: CGRectMake(20, self.lblBreakTime.edgeY + 10, self.view.frame.width - 40, 50))
-        button.setTitle(NSLocalizedString("***ExerciseController_BtnBeginExercise", comment:""), forState: UIControlState.Normal)
-        button.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        button.setTitleColor(Utils.colorLightText, forState: UIControlState.Highlighted)
-        button.addTarget(self, action: "clickBtnBeginExercise:", forControlEvents: UIControlEvents.TouchUpInside)
+        let button: UIButton = UIButton(frame: CGRect(x: 20, y: self.lblBreakTime.edgeY + 10, width: self.view.frame.width - 40, height: 50))
+        button.setTitle(NSLocalizedString("***ExerciseController_BtnBeginExercise", comment:""), for: UIControlState())
+        button.setTitleColor(UIColor.white, for: UIControlState())
+        button.setTitleColor(Utils.colorLightText, for: UIControlState.highlighted)
+        button.addTarget(self, action: #selector(ExerciseController.clickBtnBeginExercise(_:)), for: UIControlEvents.touchUpInside)
         button.backgroundColor = Utils.colorGreen
         
         return button
         }()
     
-    private lazy var bottomLineView: UIView = {
+    fileprivate lazy var bottomLineView: UIView = {
         
-        var bottomLine: UIView = UIView(frame: CGRectMake(0, self.btnBeginExercise.edgeY + 10, self.view.frame.size.width, 1))
+        var bottomLine: UIView = UIView(frame: CGRect(x: 0, y: self.btnBeginExercise.edgeY + 10, width: self.view.frame.size.width, height: 1))
         bottomLine.backgroundColor = UIColorMakeRGB(red: 229, green: 229, blue: 229)
-        bottomLine.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleTopMargin]
+        bottomLine.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleTopMargin]
         return bottomLine
         }()
     
@@ -122,15 +122,15 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     
     func setBreakTime() {
         
-        let min: Int = self.exerciseItem!.breakTime.integerValue / 60
-        let sec: Int = self.exerciseItem!.breakTime.integerValue % 60
+        let min: Int = self.exerciseItem!.breakTime.intValue / 60
+        let sec: Int = self.exerciseItem!.breakTime.intValue % 60
         let strBreakTime = NSString(format: "%d.%02d", min, sec)
-        let str = NSString(format: NSLocalizedString("***ExerciseController_BreakTime", comment:""), strBreakTime)
+        let str = NSString(format: NSLocalizedString("***ExerciseController_BreakTime", comment:"") as NSString, strBreakTime)
         self.lblBreakTime.text = NSLocalizedString(str as String, comment:"")
     }
     
     // MARK: - Action
-    func clickBtnOption(sender: UIButton) {
+    func clickBtnOption(_ sender: UIButton) {
         
         let items = [NSLocalizedString("***ContextMenuView_EditTitleExercise", comment:""),
                         NSLocalizedString("***ContextMenuView_EditBreakTime", comment:""),
@@ -148,8 +148,8 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
                 })
             }
             else if index == 1 {
-                AlertSelectBreakTime.show(NSTimeInterval(self.exerciseItem!.breakTime.integerValue), blockValue: { (value) -> () in
-                    self.exerciseItem!.breakTime = value
+                AlertSelectBreakTime.show(TimeInterval(self.exerciseItem!.breakTime.intValue), blockValue: { (value) -> () in
+                    self.exerciseItem!.breakTime = NSNumber(value: value)
                     DataManager.save()
                     self.reloadData()
                 })
@@ -163,38 +163,38 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         })
     }
     
-    func clickBtnBeginExercise(sender: UIButton) {
+    func clickBtnBeginExercise(_ sender: UIButton) {
         print("clickBtnBeginExercise")
     }
     
     // MARK: - UITableViewDataSource
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sectionInfo = self.fetchedResults!.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? SetsCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as? SetsCell
         
         if cell == nil {
-            cell = SetsCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewCell.identifier)
+            cell = SetsCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifier)
         }
         
-        cell!.setData(self.fetchedResults!.objectAtIndexPath(indexPath))
+        cell!.setData(self.fetchedResults!.object(at: indexPath))
         
         return cell!
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
+        tableView.deselectRow(at: tableView.indexPathForSelectedRow!, animated: true)
         
         if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? SetsItem {
-            AlertSetsView.show(item.weight.floatValue, reps: item.reps.integerValue, blockValue: { (weight, reps) -> () in
+            AlertSetsView.show(item.weight.floatValue, reps: item.reps.intValue, blockValue: { (weight, reps) -> () in
                 
-                item.weight = weight
-                item.reps = reps
+                item.weight = NSNumber(value: weight)
+                item.reps = NSNumber(value: reps)
                 DataManager.save()
             })
         }
@@ -202,39 +202,39 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     
     // MARK:
     // MARK: NSFetchedResultsController Delegate
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         switch type {
             
-        case .Delete:
+        case .delete:
             if let indexPath = indexPath {
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
             }
-        case .Insert:
+        case .insert:
             if let newIndexPath = newIndexPath {
-                self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
             }
-        case .Move:
+        case .move:
             if let indexPath = indexPath {
                 if let newIndexPath = newIndexPath {
-                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-                    self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                    self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                    self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
                 }
             }
-        case .Update:
+        case .update:
             if let indexPath = indexPath {
-                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? BaseCell{
-                    cell.setData(anObject)
+                if let cell = self.tableView.cellForRow(at: indexPath) as? BaseCell{
+                    cell.setData(anObject as AnyObject)
                 }
             }
         }
     }
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
     }
 

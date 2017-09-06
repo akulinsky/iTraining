@@ -17,10 +17,10 @@ class BaseContextView: UIView {
     internal lazy var backgroundView: UIView = {
         
         var view: UIView = UIView(frame: self.bounds)
-        view.backgroundColor = UIColor.blackColor()
+        view.backgroundColor = UIColor.black
         view.alpha = 0.3
-        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
-        view.hidden = true
+        view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+        view.isHidden = true
         
         return view
         }()
@@ -30,10 +30,10 @@ class BaseContextView: UIView {
         let width: CGFloat = 300
         let height: CGFloat = 200
         
-        var view: UIView = UIView(frame: CGRectMake((self.frame.size.width - width) / 2, (self.frame.size.height - height) / 2, width, height))
+        var view: UIView = UIView(frame: CGRect(x: (self.frame.size.width - width) / 2, y: (self.frame.size.height - height) / 2, width: width, height: height))
         view.backgroundColor = UIColorMakeRGB(red: 250, green: 250, blue: 250)
         view.layer.cornerRadius = 5.0
-        view.layer.borderColor = UIColor.darkGrayColor().CGColor
+        view.layer.borderColor = UIColor.darkGray.cgColor
         view.layer.borderWidth = 1.0
         view.layer.masksToBounds = true
         
@@ -42,34 +42,34 @@ class BaseContextView: UIView {
     
     internal lazy var separatorView: UIView = {
         
-        var view: UIView = UIView(frame: CGRectMake(0, self.btnDone.frame.origin.y + self.btnDone.frame.size.height + 3, self.contentView.frame.size.width, 1))
+        var view: UIView = UIView(frame: CGRect(x: 0, y: self.btnDone.frame.origin.y + self.btnDone.frame.size.height + 3, width: self.contentView.frame.size.width, height: 1))
         view.backgroundColor = UIColorMakeRGB(red: 220, green: 225, blue: 230)
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
         
         return view
         }()
     
     internal lazy var btnDone: UIButton = {
         
-        let button = UIButton(frame: CGRectMake(self.contentView.frame.size.width - 75, 5, 60, 30))
-        button.setTitle(NSLocalizedString("***Done", comment:""), forState: UIControlState.Normal)
-        button.setTitleColor(Utils.colorRed, forState: UIControlState.Normal)
-        button.setTitleColor(UIColor.darkGrayColor(), forState: UIControlState.Highlighted)
-        button.setTitleColor(Utils.colorLightText, forState: UIControlState.Disabled)
-        button.backgroundColor = UIColor.clearColor()
-        button.addTarget(self, action: "clickBtnDone:", forControlEvents: UIControlEvents.TouchUpInside)
+        let button = UIButton(frame: CGRect(x: self.contentView.frame.size.width - 75, y: 5, width: 60, height: 30))
+        button.setTitle(NSLocalizedString("***Done", comment:""), for: UIControlState())
+        button.setTitleColor(Utils.colorRed, for: UIControlState())
+        button.setTitleColor(UIColor.darkGray, for: UIControlState.highlighted)
+        button.setTitleColor(Utils.colorLightText, for: UIControlState.disabled)
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(BaseContextView.clickBtnDone(_:)), for: UIControlEvents.touchUpInside)
         
         return button
         }()
     
     internal lazy var btnCancel: UIButton = {
         
-        let button = UIButton(frame: CGRectMake(15, 5, 60, 30))
-        button.setTitle(NSLocalizedString("***Cancel", comment:""), forState: UIControlState.Normal)
-        button.setTitleColor(Utils.colorRed, forState: UIControlState.Normal)
-        button.setTitleColor(UIColor.darkGrayColor(), forState: UIControlState.Highlighted)
-        button.backgroundColor = UIColor.clearColor()
-        button.addTarget(self, action: "clickBtnCancel:", forControlEvents: UIControlEvents.TouchUpInside)
+        let button = UIButton(frame: CGRect(x: 15, y: 5, width: 60, height: 30))
+        button.setTitle(NSLocalizedString("***Cancel", comment:""), for: UIControlState())
+        button.setTitleColor(Utils.colorRed, for: UIControlState())
+        button.setTitleColor(UIColor.darkGray, for: UIControlState.highlighted)
+        button.backgroundColor = UIColor.clear
+        button.addTarget(self, action: #selector(BaseContextView.clickBtnCancel(_:)), for: UIControlEvents.touchUpInside)
         
         return button
         }()
@@ -96,11 +96,11 @@ class BaseContextView: UIView {
         self.contentView.addSubview(self.btnDone)
         self.contentView.addSubview(self.separatorView)
         
-        self.transform = CGAffineTransformMakeScale(0.01, 0.01)
-        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.transform = CGAffineTransformIdentity
+        self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+            self.transform = CGAffineTransform.identity
             }) { (finished) -> Void in
-                self.backgroundView.hidden = false
+                self.backgroundView.isHidden = false
         }
     }
     
@@ -112,19 +112,19 @@ class BaseContextView: UIView {
     
     internal func resize() {
         
-        self.contentView.frame = CGRectMake((self.frame.size.width - self.contentView.frame.size.width) / 2, (self.frame.size.height - self.contentView.frame.size.height) / 2,
-            self.contentView.frame.size.width, self.contentView.frame.size.height)
+        self.contentView.frame = CGRect(x: (self.frame.size.width - self.contentView.frame.size.width) / 2, y: (self.frame.size.height - self.contentView.frame.size.height) / 2,
+            width: self.contentView.frame.size.width, height: self.contentView.frame.size.height)
         
-        self.btnDone.frame = CGRectMake(self.contentView.frame.size.width - 75, 5, 65, 30)
-        self.separatorView.frame = CGRectMake(0, self.btnDone.frame.origin.y + self.btnDone.frame.size.height + 3, self.contentView.frame.size.width, 1)
+        self.btnDone.frame = CGRect(x: self.contentView.frame.size.width - 75, y: 5, width: 65, height: 30)
+        self.separatorView.frame = CGRect(x: 0, y: self.btnDone.frame.origin.y + self.btnDone.frame.size.height + 3, width: self.contentView.frame.size.width, height: 1)
     }
     
-    internal func cancelView(isDone: Bool) {
+    internal func cancelView(_ isDone: Bool) {
         
-        self.transform = CGAffineTransformIdentity
-        self.backgroundView.hidden = true
-        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.transform = CGAffineTransformMakeScale(0.01, 0.01)
+        self.transform = CGAffineTransform.identity
+        self.backgroundView.isHidden = true
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+            self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
             }) { (finished) -> Void in
                 self.removeFromSuperview()
                 if isDone {
@@ -138,7 +138,7 @@ class BaseContextView: UIView {
     }
     
     class func show() -> BaseContextView {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+        let window: UIWindow = UIApplication.shared.windows[0] 
         let contextView = BaseContextView(window: window)
         
         window.addSubview(contextView)
@@ -148,12 +148,12 @@ class BaseContextView: UIView {
     
     // MARK:
     // MARK: action
-    func clickBtnDone(sender: UIButton) {
+    func clickBtnDone(_ sender: UIButton) {
         
         self.cancelView(true)
     }
     
-    func clickBtnCancel(sender: UIButton) {
+    func clickBtnCancel(_ sender: UIButton) {
         
         self.cancelView(false)
     }

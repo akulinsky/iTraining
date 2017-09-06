@@ -10,18 +10,21 @@ import UIKit
 
 class DataContainer {
     
+//    private static var __once: () = {
+//            Static.instance = DataContainer()
+//        }()
+    static let sharedInstance = DataContainer()
+    
     // MARK:
     // MARK: sharedInstance
-    class var sharedInstance: DataContainer {
-        struct Static {
-            static var onceToken: dispatch_once_t = 0
-            static var instance: DataContainer? = nil
-        }
-        dispatch_once(&Static.onceToken) {
-            Static.instance = DataContainer()
-        }
-        return Static.instance!
-    }
+//    class var sharedInstance: DataContainer {
+//        struct Static {
+//            static var onceToken: Int = 0
+//            static var instance: DataContainer? = nil
+//        }
+//        _ = DataContainer.__once
+//        return Static.instance!
+//    }
     
     // MARK:
     // MARK: init

@@ -10,26 +10,26 @@ import Foundation
 
 enum MuscleGroup: Int {
     
-    case Chest = 1, Back, Biceps, Triceps, Shoulders, Legs, Abdominals
+    case chest = 1, back, biceps, triceps, shoulders, legs, abdominals
     
     func name() -> String {
         
         var strName = "empty"
         
         switch self {
-        case .Chest:
+        case .chest:
             strName = NSLocalizedString("***MuscleGroup_Chest", comment:"")
-        case .Back:
+        case .back:
             strName = NSLocalizedString("***MuscleGroup_Back", comment:"")
-        case .Biceps:
+        case .biceps:
             strName = NSLocalizedString("***MuscleGroup_Biceps", comment:"")
-        case .Triceps:
+        case .triceps:
             strName = NSLocalizedString("***MuscleGroup_Triceps", comment:"")
-        case .Shoulders:
+        case .shoulders:
             strName = NSLocalizedString("***MuscleGroup_Shoulders", comment:"")
-        case .Legs:
+        case .legs:
             strName = NSLocalizedString("***MuscleGroup_Legs", comment:"")
-        case .Abdominals:
+        case .abdominals:
             strName = NSLocalizedString("***MuscleGroup_Abdominals", comment:"")
         }
         

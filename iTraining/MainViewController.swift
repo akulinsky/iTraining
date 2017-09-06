@@ -26,13 +26,13 @@ class MainViewController: JASidePanelController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func stylePanel(panel: UIView!) {
+    override func stylePanel(_ panel: UIView!) {
         panel.clipsToBounds = true
     }
     
     override func leftButtonForCenterPanel() -> UIBarButtonItem! {
         let button = super.leftButtonForCenterPanel()
-        button.tintColor = Utils.colorRed
+        button?.tintColor = Utils.colorRed
         return button
     }
     

@@ -10,22 +10,9 @@ import UIKit
 
 class AlertView: NSObject, UIAlertViewDelegate {
     
-    var cancelFunc: ( () -> () )?
-    var okFunc: ( () -> () )?
-    var alertView: UIAlertView?
+    var alertView: UIAlertController?
     
-    // MARK:
-    // MARK: sharedInstance
-    class var sharedInstance: AlertView {
-        struct Static {
-            static var onceToken: dispatch_once_t = 0
-            static var instance: AlertView? = nil
-        }
-        dispatch_once(&Static.onceToken) {
-            Static.instance = AlertView()
-        }
-        return Static.instance!
-    }
+    static let sharedInstance = AlertView()
     
     // MARK:
     override init() {
@@ -34,64 +21,115 @@ class AlertView: NSObject, UIAlertViewDelegate {
     
     // MARK:
     // MARK: Methods
-    class func showAlert(message message: String, cancelFunc: ( () -> () )) {
+    class func showAlert(message: String, cancelFunc: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertView(title: nil, message: message, delegate: alertView, cancelButtonTitle: NSLocalizedString("***Ok", comment:""))
-        alertView.cancelFunc = cancelFunc
-        alertView.alertView!.show()
+        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        if let controller = AlertView.topViewController() {
+            controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
+        }
+        else {
+            print("AlertView ERROR: topViewController == nil")
+        }
     }
     
-    class func showAlert(title title: String, message: String, cancelFunc: ( () -> () )) {
+    class func showAlert(message: String, titleCancelButton: String, cancelFunc: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertView(title: title, message: message, delegate: alertView, cancelButtonTitle: NSLocalizedString("***Ok", comment:""))
-        alertView.cancelFunc = cancelFunc
-        alertView.alertView!.show()
+        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        if let controller = AlertView.topViewController() {
+            controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
+        }
+        else {
+            print("AlertView ERROR: topViewController == nil")
+        }
     }
     
-    class func showAlert(title title: String, message: String, titleCancelButton: String, titleOkButton: String, cancelFunc: ( () -> () ), okFunc: ( () -> () )) {
+    class func showAlert(title: String, message: String, cancelFunc: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertView(title: title, message: message, delegate: alertView, cancelButtonTitle: titleCancelButton, otherButtonTitles:titleOkButton)
-        alertView.cancelFunc = cancelFunc
-        alertView.okFunc = okFunc
-        alertView.alertView!.show()
+        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        if let controller = AlertView.topViewController() {
+            controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
+        }
+        else {
+            print("AlertView ERROR: topViewController == nil")
+        }
+    }
+    
+    class func showAlert(title: String?, message: String, titleCancelButton: String, titleOkButton: String, cancelFunc: @escaping ( () -> () ), okFunc: @escaping ( () -> () )) {
         
-//        var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-//        alert.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.Default) { action in
-//            cancelFunc()
-//            })
-//        alert.addAction(UIAlertAction(title: titleOkButton, style: UIAlertActionStyle.Default) { action in
-//            okFunc()
-//            })
-//
-//        UIApplication.sharedApplication().windows[0].rootViewController!!.presentViewController(alert, animated: true, completion: nil)
+        let alertView = AlertView.sharedInstance
+        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleOkButton, style: UIAlertActionStyle.default, handler: { acrion in okFunc() }))
+        if let controller = AlertView.topViewController() {
+            controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
+        }
+        else {
+            print("AlertView ERROR: topViewController == nil")
+        }
+    }
+    
+    class func showAlert(title: String?, message: String, titleCancelButton: String, titleButton1: String, titleButton2: String,
+                         cancelFunc: @escaping ( () -> () ), button1Func: @escaping ( () -> () ), button2Func: @escaping ( () -> () )) {
+        
+        let alertView = AlertView.sharedInstance
+        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleButton1, style: UIAlertActionStyle.default, handler: { acrion in button1Func() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleButton2, style: UIAlertActionStyle.default, handler: { acrion in button2Func() }))
+        if let controller = AlertView.topViewController() {
+            controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
+        }
+        else {
+            print("AlertView ERROR: topViewController == nil")
+        }
+    }
+    
+    class func showAlertPincode(message: String, titleCancelButton: String, titleOkButton: String, cancelFunc: @escaping () -> (), okFunc: @escaping (_ pincode: String?) -> () ) {
+        /*
+         let alertView = AlertView.sharedInstance
+         alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+         alertView.alertView!.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: { action in cancelFunc() }))
+         */
+        let alertView = AlertView.sharedInstance
+        
+        var inputTextField: UITextField?
+        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.default, handler: { action in cancelFunc() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleOkButton, style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            okFunc(inputTextField?.text)
+        }))
+        alertView.alertView!.addTextField(configurationHandler: {(textField: UITextField!) in
+            textField.placeholder = "Pincode"
+            textField.isSecureTextEntry = true
+            inputTextField = textField
+        })
+        
+        if let controller = AlertView.topViewController() {
+            controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
+        }
+        else {
+            print("AlertView ERROR: topViewController == nil")
+        }
     }
     
     class func hideAlertView() {
         
         let alertView = AlertView.sharedInstance
         if let alert = alertView.alertView {
-            alert.dismissWithClickedButtonIndex(alertView.alertView!.cancelButtonIndex, animated: true)
+            alert.dismiss(animated: true, completion: nil)
             alertView.alertView = nil
         }
     }
     
-    // MARK:
-    // MARK: UIAlertView Delegate
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        
-        if alertView.cancelButtonIndex == buttonIndex {
-            if let fun = self.cancelFunc {
-                fun()
-            }
-        }
-        else {
-            if let fun = self.okFunc {
-                fun()
-            }
-        }
-        self.alertView = nil
+    fileprivate class func topViewController() -> UIViewController! {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let topViewController = appDelegate.screenManager?.navigationController?.topViewController
+        return topViewController
     }
 }

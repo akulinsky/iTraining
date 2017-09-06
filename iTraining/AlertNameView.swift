@@ -13,9 +13,9 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     // MARK:
     // MARK: property
     var blockName: ( (String) -> () )?
-    private var keyboardNotification: AKKeyboardNotification?
+    fileprivate var keyboardNotification: AKKeyboardNotification?
     
-    private var name: String? {
+    fileprivate var name: String? {
         
         get {
             return self.tvName.text
@@ -26,22 +26,22 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
         }
     }
     
-    private lazy var substrateUserView: UIView = {
+    fileprivate lazy var substrateUserView: UIView = {
         
-        var view: UIView = UIView(frame: CGRectMake(20, self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, self.contentView.frame.size.width - 40, 50))
-        view.backgroundColor = UIColor.clearColor()
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        var view: UIView = UIView(frame: CGRect(x: 20, y: self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, width: self.contentView.frame.size.width - 40, height: 50))
+        view.backgroundColor = UIColor.clear
+        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = Utils.colorDarkBorder.CGColor
+        view.layer.borderColor = Utils.colorDarkBorder.cgColor
         
         return view
         }()
     
-    private lazy var tvName: UITextField = {
+    fileprivate lazy var tvName: UITextField = {
         
-        var text = UITextField(frame: CGRectMake(10, 0, self.substrateUserView.frame.size.width - 20, self.substrateUserView.frame.size.height))
-        text.backgroundColor = UIColor.clearColor()
-        text.returnKeyType = UIReturnKeyType.Done
+        var text = UITextField(frame: CGRect(x: 10, y: 0, width: self.substrateUserView.frame.size.width - 20, height: self.substrateUserView.frame.size.height))
+        text.backgroundColor = UIColor.clear
+        text.returnKeyType = UIReturnKeyType.done
         //text.autocorrectionType = UITextAutocorrectionType.No
         text.delegate = self
         text.placeholder = NSLocalizedString("***Name", comment:"")
@@ -56,9 +56,9 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
         
         super.init(window: window)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceOrientationDidChangeNotification:", name: UIDeviceOrientationDidChangeNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AlertNameView.deviceOrientationDidChangeNotification(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AlertNameView.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AlertNameView.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -66,7 +66,7 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK:
@@ -89,11 +89,11 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
             positionContentViewY = (self.frame.height - heightKB - self.contentView.frame.height) / 2
         }
         
-        self.contentView.frame = CGRectMake((self.frame.size.width - self.contentView.frame.size.width) / 2, positionContentViewY,
-            self.contentView.frame.size.width, self.contentView.frame.size.height)
+        self.contentView.frame = CGRect(x: (self.frame.size.width - self.contentView.frame.size.width) / 2, y: positionContentViewY,
+            width: self.contentView.frame.size.width, height: self.contentView.frame.size.height)
         
-        self.substrateUserView.frame = CGRectMake(20, self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, self.contentView.frame.size.width - 40, 50)
-        self.tvName.frame = CGRectMake(10, 0, self.substrateUserView.frame.size.width - 20, self.substrateUserView.frame.size.height)
+        self.substrateUserView.frame = CGRect(x: 20, y: self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, width: self.contentView.frame.size.width - 40, height: 50)
+        self.tvName.frame = CGRect(x: 10, y: 0, width: self.substrateUserView.frame.size.width - 20, height: self.substrateUserView.frame.size.height)
     }
     
     override func willAlertCancel() {
@@ -103,8 +103,8 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
         }
     }
     
-    class func show(name: String?, blockName: ( (name: String) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+    class func show(_ name: String?, blockName: @escaping ( (_ name: String) -> () )) {
+        let window: UIWindow = UIApplication.shared.windows[0] 
         let contextView = AlertNameView(window: window)
         contextView.blockName = blockName
         
@@ -116,24 +116,24 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     }
     
     // MARK: - UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.cancelView(true)
         return true
     }
     
     // MARK: - Notification
-    func deviceOrientationDidChangeNotification(notification: NSNotification) {
+    func deviceOrientationDidChangeNotification(_ notification: Notification) {
         self.frame = self.windowObj.bounds
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         
         self.keyboardNotification = AKKeyboardNotification(notification)
         
         self.resize()
     }
     
-    func keyboardDidHide(notification: NSNotification) {
+    func keyboardDidHide(_ notification: Notification) {
         self.keyboardNotification = nil
     }
 }

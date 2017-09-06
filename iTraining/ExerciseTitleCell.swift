@@ -14,13 +14,13 @@ class ExerciseTitleCell: BaseCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = Utils.colorLightBorder
-        self.textLabel!.font = UIFont.boldSystemFontOfSize(16)
+        self.textLabel!.font = UIFont.boldSystemFont(ofSize: 16)
         self.textLabel!.textColor = Utils.colorRed
-        self.textLabel!.shadowOffset = CGSizeMake(1.0, 1.0)
+        self.textLabel!.shadowOffset = CGSize(width: 1.0, height: 1.0)
         self.textLabel!.shadowColor = Utils.colorLightText
         //self.textLabel!.textColor = UIColorMakeRGB(red: 205, green: 92, blue: 92)
-        self.accessoryType = UITableViewCellAccessoryType.None
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+        self.accessoryType = UITableViewCellAccessoryType.none
+        self.selectionStyle = UITableViewCellSelectionStyle.none
         //self.bottomLine.removeFromSuperview()
     }
     
@@ -33,13 +33,13 @@ class ExerciseTitleCell: BaseCell {
         // Initialization code
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
     }
     
-    override func setData(data: AnyObject) {
+    override func setData(_ data: AnyObject) {
         
         if let titleItem = data as? ExerciseTitle {
             self.textLabel!.text = titleItem.title

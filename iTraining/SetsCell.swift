@@ -13,7 +13,7 @@ class SetsCell: BaseCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.accessoryType = UITableViewCellAccessoryType.None
+        self.accessoryType = UITableViewCellAccessoryType.none
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -25,13 +25,13 @@ class SetsCell: BaseCell {
         // Initialization code
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
     }
     
-    override func setData(data: AnyObject) {
+    override func setData(_ data: AnyObject) {
         if let item = data as? SetsItem {
             self.textLabel!.text = "\(item.weight) kg x \(item.reps) reps"
         }

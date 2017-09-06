@@ -7,21 +7,45 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class AlertSetsView: BaseContextView, UITextFieldDelegate {
 
     // MARK:
     // MARK: property
     var blockValue: ( (Float, Int) -> () )?
-    private var keyboardNotification: AKKeyboardNotification?
+    fileprivate var keyboardNotification: AKKeyboardNotification?
     
-    private var weight: Float? {
+    fileprivate var weight: Float? {
         
         get {
             
-            let numberFormatter = NSNumberFormatter()
-            numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-            let number: NSNumber? = numberFormatter.numberFromString(self.tfWeight.text!)
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            let number: NSNumber? = numberFormatter.number(from: self.tfWeight.text!)
             
             var retVal: Float = 0.0
             if let number = number {
@@ -39,7 +63,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         }
     }
     
-    private var reps: Int? {
+    fileprivate var reps: Int? {
         
         get {
             return (self.tfReps.text! as NSString).integerValue
@@ -50,56 +74,56 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         }
     }
     
-    private lazy var substrateWeightView: UIView = {
+    fileprivate lazy var substrateWeightView: UIView = {
         
-        var view: UIView = UIView(frame: CGRectZero)
-        view.backgroundColor = UIColor.clearColor()
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        var view: UIView = UIView(frame: CGRect.zero)
+        view.backgroundColor = UIColor.clear
+        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = Utils.colorDarkBorder.CGColor
+        view.layer.borderColor = Utils.colorDarkBorder.cgColor
         return view
         }()
     
-    private lazy var tfWeight: UITextField = {
+    fileprivate lazy var tfWeight: UITextField = {
         
-        var text: UITextField = UITextField(frame: CGRectZero)
-        text.backgroundColor = UIColor.clearColor()
-        text.keyboardType = UIKeyboardType.DecimalPad
+        var text: UITextField = UITextField(frame: CGRect.zero)
+        text.backgroundColor = UIColor.clear
+        text.keyboardType = UIKeyboardType.decimalPad
         text.delegate = self
         text.placeholder = NSLocalizedString("***Weight", comment:"")
         
         return text
         }()
     
-    private lazy var substrateRepsView: UIView = {
+    fileprivate lazy var substrateRepsView: UIView = {
         
-        var view: UIView = UIView(frame: CGRectZero)
-        view.backgroundColor = UIColor.clearColor()
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        var view: UIView = UIView(frame: CGRect.zero)
+        view.backgroundColor = UIColor.clear
+        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
         view.layer.borderWidth = 1.0
-        view.layer.borderColor = Utils.colorDarkBorder.CGColor
+        view.layer.borderColor = Utils.colorDarkBorder.cgColor
         
         return view
         }()
     
-    private lazy var tfReps: UITextField = {
+    fileprivate lazy var tfReps: UITextField = {
         
-        var text: UITextField = UITextField(frame: CGRectZero)
-        text.backgroundColor = UIColor.clearColor()
-        text.keyboardType = UIKeyboardType.NumberPad
+        var text: UITextField = UITextField(frame: CGRect.zero)
+        text.backgroundColor = UIColor.clear
+        text.keyboardType = UIKeyboardType.numberPad
         text.delegate = self
         text.placeholder = NSLocalizedString("***Reps", comment:"")
         
         return text
         }()
     
-    private lazy var lblSeparator: UILabel = {
+    fileprivate lazy var lblSeparator: UILabel = {
         
-        let label: UILabel = UILabel(frame: CGRectZero)
-        label.backgroundColor = UIColor.clearColor()
+        let label: UILabel = UILabel(frame: CGRect.zero)
+        label.backgroundColor = UIColor.clear
         label.textColor = Utils.colorDarkText
-        label.font = UIFont.boldSystemFontOfSize(20)
-        label.textAlignment = NSTextAlignment.Center
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.textAlignment = NSTextAlignment.center
         label.text = "X"
         label.sizeToFit()
         
@@ -113,10 +137,10 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         
         super.init(window: window)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "deviceOrientationDidChangeNotification:", name: UIDeviceOrientationDidChangeNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidHide:", name: UIKeyboardDidHideNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "textDidChangeNotification:", name: UITextFieldTextDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.deviceOrientationDidChangeNotification(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.textDidChangeNotification(_:)), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -124,7 +148,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK:
@@ -151,20 +175,20 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
             positionContentViewY = (self.frame.height - heightKB - self.contentView.frame.height) / 2
         }
         
-        self.contentView.frame = CGRectMake((self.frame.size.width - self.contentView.frame.size.width) / 2, positionContentViewY,
-            self.contentView.frame.size.width, self.contentView.frame.size.height)
+        self.contentView.frame = CGRect(x: (self.frame.size.width - self.contentView.frame.size.width) / 2, y: positionContentViewY,
+            width: self.contentView.frame.size.width, height: self.contentView.frame.size.height)
         
         let widthSubstrate: CGFloat = 80
         
-        self.substrateWeightView.frame = CGRectMake((self.contentView.frame.width - widthSubstrate * 2 - self.lblSeparator.frame.width - 20) / 2,
-                                                        self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, widthSubstrate, 50)
-        self.tfWeight.frame = CGRectMake(10, 0, self.substrateWeightView.frame.size.width - 20, self.substrateWeightView.frame.size.height)
+        self.substrateWeightView.frame = CGRect(x: (self.contentView.frame.width - widthSubstrate * 2 - self.lblSeparator.frame.width - 20) / 2,
+                                                        y: self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, width: widthSubstrate, height: 50)
+        self.tfWeight.frame = CGRect(x: 10, y: 0, width: self.substrateWeightView.frame.size.width - 20, height: self.substrateWeightView.frame.size.height)
         
-        self.lblSeparator.frame = CGRectMake(self.substrateWeightView.edgeX + 10, self.substrateWeightView.frame.origin.y + (self.substrateWeightView.frame.height - self.lblSeparator.frame.height) / 2,
-                                                self.lblSeparator.frame.width, self.lblSeparator.frame.height)
+        self.lblSeparator.frame = CGRect(x: self.substrateWeightView.edgeX + 10, y: self.substrateWeightView.frame.origin.y + (self.substrateWeightView.frame.height - self.lblSeparator.frame.height) / 2,
+                                                width: self.lblSeparator.frame.width, height: self.lblSeparator.frame.height)
         
-        self.substrateRepsView.frame = CGRectMake(self.lblSeparator.edgeX + 10, self.substrateWeightView.frame.origin.y, widthSubstrate, 50)
-        self.tfReps.frame = CGRectMake(10, 0, self.substrateRepsView.frame.size.width - 20, self.substrateRepsView.frame.size.height)
+        self.substrateRepsView.frame = CGRect(x: self.lblSeparator.edgeX + 10, y: self.substrateWeightView.frame.origin.y, width: widthSubstrate, height: 50)
+        self.tfReps.frame = CGRect(x: 10, y: 0, width: self.substrateRepsView.frame.size.width - 20, height: self.substrateRepsView.frame.size.height)
     }
     
     override func willAlertCancel() {
@@ -174,8 +198,8 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         }
     }
     
-    class func show(weight: Float?, reps: Int?, blockValue: ( (weight: Float, reps: Int) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+    class func show(_ weight: Float?, reps: Int?, blockValue: @escaping ( (_ weight: Float, _ reps: Int) -> () )) {
+        let window: UIWindow = UIApplication.shared.windows[0] 
         let contextView = AlertSetsView(window: window)
         contextView.blockValue = blockValue
         
@@ -194,36 +218,36 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     
     func reloadData() {
         if self.tfWeight.text != nil && self.tfReps.text != nil && (self.tfWeight.text! as NSString).floatValue > 0.0 && Int(self.tfReps.text!) > 0 {
-            self.btnDone.enabled = true
+            self.btnDone.isEnabled = true
         }
         else {
-            self.btnDone.enabled = false
+            self.btnDone.isEnabled = false
         }
     }
     
     // MARK: - UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.cancelView(true)
         return true
     }
     
     // MARK: - Notification
-    func deviceOrientationDidChangeNotification(notification: NSNotification) {
+    func deviceOrientationDidChangeNotification(_ notification: Notification) {
         self.frame = self.windowObj.bounds
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         
         self.keyboardNotification = AKKeyboardNotification(notification)
         
         self.resize()
     }
     
-    func keyboardDidHide(notification: NSNotification) {
+    func keyboardDidHide(_ notification: Notification) {
         self.keyboardNotification = nil
     }
     
-    func textDidChangeNotification(notification: NSNotification) {
+    func textDidChangeNotification(_ notification: Notification) {
         if let textField = notification.object as? UITextField {
             if textField == self.tfWeight || textField == self.tfReps {
                 self.reloadData()

@@ -17,7 +17,7 @@ class ScreenManager:NSObject {
     var window: UIWindow? = nil
     var navigationController: NavigationController? = nil
     
-    private lazy var mainScreen: MainViewController = {
+    fileprivate lazy var mainScreen: MainViewController = {
         
         var object: MainViewController = MainViewController()
         object.shouldDelegateAutorotateToVisiblePanel = false
@@ -29,19 +29,19 @@ class ScreenManager:NSObject {
         return object
         }()
     
-    private lazy var trainingListController: TrainingListController = {
+    fileprivate lazy var trainingListController: TrainingListController = {
         
         var object = TrainingListController()
         return object
         }()
     
-    private lazy var navigationPanel: NavigationPanelController = {
+    fileprivate lazy var navigationPanel: NavigationPanelController = {
         
         var object = NavigationPanelController()
         return object
         }()
     
-    var timer: NSTimer?
+    var timer: Timer?
     
     // MARK:
     init? (window: UIWindow?)
@@ -53,39 +53,36 @@ class ScreenManager:NSObject {
         }
         self.window = window
         self.navigationController = self.window?.rootViewController as? NavigationController;
-        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController!.navigationBar.shadowImage = UIImage()
-        self.navigationController!.navigationBar.translucent = false
-        self.navigationController!.navigationBarHidden = true
-        
-        
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+        self.navigationController!.navigationBar.isTranslucent = false
+        self.navigationController!.isNavigationBarHidden = true
         
         subscribeToEvents()
         showMainScreenAnimation(false)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK:
     // MARK: methods
-    private func subscribeToEvents() {
+    fileprivate func subscribeToEvents() {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showMainScreenNotification:", name: NotificationCenterEvents.ShowMainScreenEvent, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showSettingScreenNotification:", name: NotificationCenterEvents.ShowSettingsEvent, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidEnterBackground:", name: NotificationCenterEvents.AppDidEnterBackgroundEvent, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidEnterForeground:", name: NotificationCenterEvents.AppDidEnterForegroundEvent, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScreenManager.showMainScreenNotification(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.ShowMainScreenEvent), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScreenManager.showSettingScreenNotification(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.ShowSettingsEvent), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.AppDidEnterBackgroundEvent), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ScreenManager.applicationDidEnterForeground(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.AppDidEnterForegroundEvent), object: nil)
     }
     
-    private func showMainScreenAnimation(animation: Bool) {
+    fileprivate func showMainScreenAnimation(_ animation: Bool) {
         
         let topViewController = self.navigationController!.topViewController
         let visibleViewController = self.navigationController!.visibleViewController
         
         if topViewController != visibleViewController {
-            topViewController!.dismissViewControllerAnimated(true, completion: nil)
+            topViewController!.dismiss(animated: true, completion: nil)
         }
         
         if topViewController != self.mainScreen {
@@ -110,35 +107,35 @@ class ScreenManager:NSObject {
         }
     }
     
-    private func showTrainingListScreen(animation: Bool) {
+    fileprivate func showTrainingListScreen(_ animation: Bool) {
         
         self.mainScreen.centerPanel = self.navigationControllerForViewController(self.trainingListController)
     }
     
-    private func navigationControllerForViewController(viewController: UIViewController) -> UINavigationController {
+    fileprivate func navigationControllerForViewController(_ viewController: UIViewController) -> UINavigationController {
         let navigation = UINavigationController(rootViewController: viewController)
-        navigation.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        navigation.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigation.navigationBar.shadowImage = UIImage()
-        navigation.navigationBar.translucent = true
+        navigation.navigationBar.isTranslucent = true
         
         return navigation
     }
     
     // MARK:
     // MARK: notifications
-    func showMainScreenNotification(notification: NSNotification) {
+    func showMainScreenNotification(_ notification: Notification) {
         showMainScreenAnimation(true)
     }
     
-    func showSettingScreenNotification(notification: NSNotification) {
+    func showSettingScreenNotification(_ notification: Notification) {
         print("showSettingScreenNotification")
     }
     
-    func applicationDidEnterBackground(notification: NSNotification) {
+    func applicationDidEnterBackground(_ notification: Notification) {
         print("applicationDidEnterBackground")
     }
     
-    func applicationDidEnterForeground(notification: NSNotification) {
+    func applicationDidEnterForeground(_ notification: Notification) {
         print("applicationDidEnterForeground")
     }
 }

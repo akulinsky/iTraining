@@ -15,9 +15,9 @@ class BaseCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         self.textLabel!.textColor = Utils.colorDarkText
-        self.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        self.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
         
         self.addSubview(self.bottomLine)
     }
@@ -29,7 +29,7 @@ class BaseCell: UITableViewCell {
     // MARK:
     // MARK: property
     lazy var bottomLine: UIView = {
-        var line = UIView(frame: CGRectZero)
+        var line = UIView(frame: CGRect.zero)
         line.backgroundColor = Utils.colorLightBorder
         return line
     }()
@@ -41,7 +41,7 @@ class BaseCell: UITableViewCell {
         // Initialization code
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
@@ -50,10 +50,10 @@ class BaseCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.bottomLine.frame = CGRectMake(0, self.frame.height - 1, self.frame.width, 1)
+        self.bottomLine.frame = CGRect(x: 0, y: self.frame.height - 1, width: self.frame.width, height: 1)
     }
     
-    func setData(data: AnyObject) {
+    func setData(_ data: AnyObject) {
         
     }
 

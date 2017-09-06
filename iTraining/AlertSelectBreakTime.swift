@@ -12,21 +12,21 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
 
     // MARK:
     // MARK: property
-    var blockValue: ( (NSTimeInterval) -> () )?
+    var blockValue: ( (TimeInterval) -> () )?
     
-    private var arrMinutes: [String] = []
-    private var arrSeconds: [String] = []
+    fileprivate var arrMinutes: [String] = []
+    fileprivate var arrSeconds: [String] = []
     
-    private var selectIndexMinute: Int = 0
-    private var selectIndexSecond: Int = 30 / 5
+    fileprivate var selectIndexMinute: Int = 0
+    fileprivate var selectIndexSecond: Int = 30 / 5
     
-    private var timeInterval: NSTimeInterval = 0
-    private var value: NSTimeInterval {
+    fileprivate var timeInterval: TimeInterval = 0
+    fileprivate var value: TimeInterval {
         
         get {
             let min: Int = self.selectIndexMinute * 60
             let sec: Int = self.selectIndexSecond * 5
-            self.timeInterval = NSTimeInterval(min + sec)
+            self.timeInterval = TimeInterval(min + sec)
             
             return self.timeInterval
         }
@@ -42,20 +42,20 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
         }
     }
     
-    private lazy var pickerView: UIPickerView = {
+    fileprivate lazy var pickerView: UIPickerView = {
         
-        var picker: UIPickerView = UIPickerView(frame: CGRectZero)
+        var picker: UIPickerView = UIPickerView(frame: CGRect.zero)
         picker.delegate = self
         return picker
         }()
     
-    private lazy var lblComma: UILabel = {
+    fileprivate lazy var lblComma: UILabel = {
         
-        let label: UILabel = UILabel(frame: CGRectZero)
-        label.backgroundColor = UIColor.clearColor()
+        let label: UILabel = UILabel(frame: CGRect.zero)
+        label.backgroundColor = UIColor.clear
         label.textColor = Utils.colorDarkText
-        label.font = UIFont.systemFontOfSize(20)
-        label.textAlignment = NSTextAlignment.Center
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.textAlignment = NSTextAlignment.center
         label.text = ","
         
         return label
@@ -70,7 +70,7 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
             self.arrMinutes.append(index.description)
         }
         
-        for var index = 0; index < 60; index += 5 {
+        for index in 0...59 {
             self.arrSeconds.append(index.description)
         }
         
@@ -86,7 +86,7 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
     override func setup() {
         super.setup()
         
-        self.contentView.frame.size = CGSizeMake(self.contentView.frame.width, 260)
+        self.contentView.frame.size = CGSize(width: self.contentView.frame.width, height: 260)
         
         self.contentView.addSubview(self.pickerView)
         self.pickerView.addSubview(self.lblComma)
@@ -102,13 +102,13 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
         super.resize()
         
         let width: CGFloat = self.contentView.frame.width
-        self.pickerView.frame = CGRectMake((self.contentView.frame.width - width) / 2,
-                                            self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - self.pickerView.frame.height) / 2,
-                                            width, self.pickerView.frame.height)
+        self.pickerView.frame = CGRect(x: (self.contentView.frame.width - width) / 2,
+                                            y: self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - self.pickerView.frame.height) / 2,
+                                            width: width, height: self.pickerView.frame.height)
         
         //width = 5
         self.lblComma.sizeToFit()
-        self.lblComma.frame = CGRectMake((self.pickerView.frame.width - self.lblComma.frame.width) / 2, (self.pickerView.frame.height - self.lblComma.frame.height) / 2, self.lblComma.frame.width, self.lblComma.frame.height)
+        self.lblComma.frame = CGRect(x: (self.pickerView.frame.width - self.lblComma.frame.width) / 2, y: (self.pickerView.frame.height - self.lblComma.frame.height) / 2, width: self.lblComma.frame.width, height: self.lblComma.frame.height)
     }
     
     override func willAlertCancel() {
@@ -118,8 +118,8 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
         }
     }
     
-    class func show(value: NSTimeInterval?, blockValue: ( (value: NSTimeInterval) -> () )) {
-        let window: UIWindow = UIApplication.sharedApplication().windows[0] 
+    class func show(_ value: TimeInterval?, blockValue: @escaping ( (_ value: TimeInterval) -> () )) {
+        let window: UIWindow = UIApplication.shared.windows[0] 
         let contextView = AlertSelectBreakTime(window: window)
         contextView.blockValue = blockValue
         
@@ -132,7 +132,7 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
     
     // MARK:
     // MARK: UIPickerViewDelegate
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
         if component == 0 {
             self.selectIndexMinute = row
@@ -142,17 +142,17 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
         }
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         return (component == 0) ? self.arrMinutes.count : self.arrSeconds.count
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         
         return 2
     }
     
-    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
         var attributedString: NSAttributedString?
         if component == 0 {
@@ -165,7 +165,7 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
         return attributedString
     }
     
-    func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         
         var width: CGFloat = 35
         if component == 1 {

@@ -20,7 +20,7 @@ class BaseViewController: UIViewController {
             if self.navigationController == nil {
                 height = 0.0
             }
-            else if self.navigationController!.navigationBarHidden {
+            else if self.navigationController!.isNavigationBarHidden {
                 height = heightStatusBar
             }
             else {
@@ -33,35 +33,35 @@ class BaseViewController: UIViewController {
     
     var heightStatusBar: CGFloat {
         get {
-            return (UIApplication.sharedApplication().statusBarOrientation == UIInterfaceOrientation.Portrait ||
-                UIApplication.sharedApplication().statusBarOrientation == UIInterfaceOrientation.PortraitUpsideDown)
-                ? UIApplication.sharedApplication().statusBarFrame.size.height : UIApplication.sharedApplication().statusBarFrame.size.width
+            return (UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.portrait ||
+                UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.portraitUpsideDown)
+                ? UIApplication.shared.statusBarFrame.size.height : UIApplication.shared.statusBarFrame.size.width
         }
     }
     
-    private lazy var statusBarView: UIView = {
+    fileprivate lazy var statusBarView: UIView = {
         
-        var view: UIView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, self.heightStatusBar))
+        var view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.heightStatusBar))
         view.backgroundColor = Utils.colorRed
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
         return view
     }()
     
-    private lazy var navigationBarView: UIView = {
+    fileprivate lazy var navigationBarView: UIView = {
         
-        var frame = CGRectZero
+        var frame = CGRect.zero
         if self.navigationController != nil {
             frame = self.navigationController!.navigationBar.frame
         }
         var view: UIView = UIView(frame: frame)
         view.backgroundColor = Utils.colorNavigationBar
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
         
         if self.navigationController != nil {
             
-            var bottomLine: UIView = UIView(frame: CGRectMake(0, self.navigationController!.navigationBar.frame.size.height - 1, self.navigationController!.navigationBar.frame.size.width, 1))
+            var bottomLine: UIView = UIView(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.size.height - 1, width: self.navigationController!.navigationBar.frame.size.width, height: 1))
             bottomLine.backgroundColor = UIColorMakeRGB(red: 229, green: 229, blue: 229)
-            bottomLine.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleTopMargin]
+            bottomLine.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleTopMargin]
             view.addSubview(bottomLine)
         }
         
@@ -70,6 +70,9 @@ class BaseViewController: UIViewController {
     
     // MARK:
     // MARK: methods
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,11 +95,11 @@ class BaseViewController: UIViewController {
     }
     
     func resizeViews() {
-        self.statusBarView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.heightStatusBar)
+        self.statusBarView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.heightStatusBar)
         self.navigationBarView.frame = self.navigationController!.navigationBar.frame;
     }
     
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+    override func willAnimateRotation(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         self.resizeViews()
     }
 

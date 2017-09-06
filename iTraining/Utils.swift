@@ -8,13 +8,9 @@
 
 import UIKit
 
-public func delay(delay:Double, closure:()->()) {
-    dispatch_after(
-        dispatch_time(
-            DISPATCH_TIME_NOW,
-            Int64(delay * Double(NSEC_PER_SEC))
-        ),
-        dispatch_get_main_queue(), closure)
+public func delay(_ delay:Double, closure:@escaping ()->()) {
+    DispatchQueue.main.asyncAfter(
+        deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
 }
 
 class Utils {
@@ -66,40 +62,40 @@ class Utils {
     
     // MARK:
     // MARK: Date
-    class func dateFromString(strDate: String) -> NSDate? {
+    class func dateFromString(_ strDate: String) -> Date? {
         if strDate.isEmpty {
             return nil
         }
         
-        let df = NSDateFormatter()
-        df.locale = NSLocale(localeIdentifier: "US")
+        let df = DateFormatter()
+        df.locale = Locale(identifier: "US")
         df.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
-        var date: NSDate? = df.dateFromString(strDate)
+        var date: Date? = df.date(from: strDate)
         if date == nil {
             df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            date = df.dateFromString(strDate)
+            date = df.date(from: strDate)
         }
         
         return date
     }
     
-    class func stringFromDate(date: NSDate?, format: String) -> String {
+    class func stringFromDate(_ date: Date?, format: String) -> String {
         if format.isEmpty || date == nil {
             print("Util stringFromDate error: format.isEmpty || date == nil", terminator: "")
             return ""
         }
         
-        let df = NSDateFormatter()
+        let df = DateFormatter()
         //df.locale = NSLocale(localeIdentifier: "US")
         df.dateFormat = format
         
-        return df.stringFromDate(date!)
+        return df.string(from: date!)
     }
     
-    class func stringFromClass(anyClass: AnyClass) -> String {
+    class func stringFromClass(_ anyClass: AnyClass) -> String {
         let classString = NSStringFromClass(anyClass)
-        let classArray:Array<String> = classString.componentsSeparatedByString(".")
+        let classArray:Array<String> = classString.components(separatedBy: ".")
         let className = classArray.last!
         return className
     }
@@ -107,15 +103,15 @@ class Utils {
     // MARK:
     
     class func interfaceOrientationIsPortrait() -> Bool {
-        return UIInterfaceOrientationIsPortrait(UIApplication.sharedApplication().statusBarOrientation)
+        return UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation)
     }
 }
 
-func UIColorMakeRGBAlpha(red red: Float, green: Float, blue: Float, alpha: Float) -> UIColor {
+func UIColorMakeRGBAlpha(red: Float, green: Float, blue: Float, alpha: Float) -> UIColor {
     return UIColor(red: CGFloat(red / 255.0), green: CGFloat(green / 255.0), blue: CGFloat(blue / 255.0), alpha: CGFloat(alpha))
 }
 
-func UIColorMakeRGB(red red: Float, green: Float, blue: Float) -> UIColor {
+func UIColorMakeRGB(red: Float, green: Float, blue: Float) -> UIColor {
     return UIColorMakeRGBAlpha(red: red, green: green, blue: blue, alpha: 1.0)
 }
 

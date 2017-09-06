@@ -13,19 +13,19 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
 
     // MARK:
     // MARK: property
-    private var fetchedResults: NSFetchedResultsController?
+    fileprivate var fetchedResults: NSFetchedResultsController<NSFetchRequestResult>?
     var exerciseItem: ExerciseItem?
     
-    private lazy var tableView: UITableView = {
+    fileprivate lazy var tableView: UITableView = {
         
-        var object: UITableView = UITableView(frame: CGRectMake(0, self.heightHeader, self.view.frame.size.width, self.view.frame.size.height - self.heightHeader), style: UITableViewStyle.Plain)
+        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.heightHeader, width: self.view.frame.size.width, height: self.view.frame.size.height - self.heightHeader), style: UITableViewStyle.plain)
         object.delegate = self
         object.dataSource = self
-        object.backgroundColor = UIColor.clearColor()
-        object.separatorStyle = UITableViewCellSeparatorStyle.None
-        object.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleWidth]
+        object.backgroundColor = UIColor.clear
+        object.separatorStyle = UITableViewCellSeparatorStyle.none
+        object.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleWidth]
         object.allowsSelectionDuringEditing = true
-        object.editing = true
+        object.isEditing = true
         
         return object
         }()
@@ -41,7 +41,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         
         self.view.addSubview(self.tableView)
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "clickBtnAdd:")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(SetsController.clickBtnAdd(_:)))
     }
     
     override func didReceiveMemoryWarning() {
@@ -57,7 +57,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         super.resizeViews()
     }
     
-    private func changePositionItems() {
+    fileprivate func changePositionItems() {
         
         let sectionInfo = self.fetchedResults!.sections![0] 
         
@@ -65,70 +65,70 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         for item in sectionInfo.objects! {
             
             if let obj = item as? SetsItem {
-                obj.position = index
-                ++index
+                obj.position = NSNumber(value: index)
+                index += 1
             }
         }
     }
     
-    private func changePositionItems(items: [SetsItem]) {
+    fileprivate func changePositionItems(_ items: [SetsItem]) {
         
         var index = 0
         for item in items {
-            item.position = index
-            ++index
+            item.position = NSNumber(value: index)
+            index += 1
         }
     }
     
     // MARK: - Action
-    func clickBtnAdd(sender: UIBarButtonItem) {
+    func clickBtnAdd(_ sender: UIBarButtonItem) {
         
         AlertSetsView.show(nil, reps: nil, blockValue: { (weight, reps) -> () in
             
             let item: SetsItem = DataManager.createItem(nameItem: CoreDataObjectNames.SetsItem) as! SetsItem
-            item.weight = weight
-            item.reps = reps
+            item.weight = NSNumber(value: weight)
+            item.reps = NSNumber(value: reps)
             item.exercise = self.exerciseItem!
-            item.position = self.fetchedResults!.fetchedObjects!.count
+            item.position = NSNumber(value: self.fetchedResults!.fetchedObjects!.count)
             
             DataManager.save()
         })
     }
     
     // MARK: - UITableViewDataSource
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         let sectionInfo = self.fetchedResults!.sections![section] 
         return sectionInfo.numberOfObjects
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? SetsCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as? SetsCell
         
         if cell == nil {
-            cell = SetsCell(style: UITableViewCellStyle.Default, reuseIdentifier: TableViewCell.identifier)
+            cell = SetsCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifier)
         }
         
-        cell!.setData(self.fetchedResults!.objectAtIndexPath(indexPath))
+        cell!.setData(self.fetchedResults!.object(at: indexPath))
         
         return cell!
     }
     
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
     var isMovingItem: Bool = false
     
-    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
         isMovingItem = true
         
         if var todos = self.fetchedResults!.fetchedObjects as? [SetsItem] {
             let todo = todos[sourceIndexPath.row]
-            todos.removeAtIndex(sourceIndexPath.row)
-            todos.insert(todo, atIndex: destinationIndexPath.row)
+            todos.remove(at: sourceIndexPath.row)
+            todos.insert(todo, at: destinationIndexPath.row)
             
             self.changePositionItems(todos)
             
@@ -138,22 +138,22 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         isMovingItem = false
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == UITableViewCellEditingStyle.Delete {
-            DataManager.removeItem(self.fetchedResults!.objectAtIndexPath(indexPath) as! NSManagedObject)
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            DataManager.removeItem(self.fetchedResults!.object(at: indexPath) as! NSManagedObject)
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
+        tableView.deselectRow(at: tableView.indexPathForSelectedRow!, animated: true)
         
         if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? SetsItem {
-            AlertSetsView.show(item.weight.floatValue, reps: item.reps.integerValue, blockValue: { (weight, reps) -> () in
+            AlertSetsView.show(item.weight.floatValue, reps: item.reps.intValue, blockValue: { (weight, reps) -> () in
                 
-                item.weight = weight
-                item.reps = reps
+                item.weight = NSNumber(value: weight)
+                item.reps = NSNumber(value: reps)
                 DataManager.save()
             })
         }
@@ -161,7 +161,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     // MARK:
     // MARK: NSFetchedResultsController Delegate
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         
         if isMovingItem {
             return
@@ -169,38 +169,38 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         
         switch type {
             
-        case .Delete:
+        case .delete:
             if let indexPath = indexPath {
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Left)
+                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
             }
-        case .Insert:
+        case .insert:
             if let newIndexPath = newIndexPath {
-                self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
             }
-        case .Move:
+        case .move:
             if let indexPath = indexPath {
                 if let newIndexPath = newIndexPath {
-                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-                    self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                    self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+                    self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
                 }
             }
-        case .Update:
+        case .update:
             if let indexPath = indexPath {
-                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? BaseCell{
-                    cell.setData(anObject)
+                if let cell = self.tableView.cellForRow(at: indexPath) as? BaseCell{
+                    cell.setData(anObject as AnyObject)
                 }
             }
         }
     }
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if isMovingItem {
             return
         }
         self.tableView.beginUpdates()
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if isMovingItem {
             return
         }
