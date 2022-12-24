@@ -83,6 +83,10 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     override func resize() {
         super.resize()
         
+        if ignorResize {
+            return
+        }
+        
         var positionContentViewY = (self.frame.size.height - self.contentView.frame.size.height) / 2
         if self.keyboardNotification != nil {
             let heightKB = self.keyboardNotification!.screenFrameBegin.height

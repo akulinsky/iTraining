@@ -101,6 +101,10 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
     override func resize() {
         super.resize()
         
+        if ignorResize {
+            return
+        }
+        
         let width: CGFloat = self.contentView.frame.width
         self.pickerView.frame = CGRect(x: (self.contentView.frame.width - width) / 2,
                                             y: self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - self.pickerView.frame.height) / 2,

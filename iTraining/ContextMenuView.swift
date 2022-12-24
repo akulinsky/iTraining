@@ -17,6 +17,8 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     var blockSelectItem: ( (Int, String) -> () )?
     fileprivate var items: [String] = []
     
+    private var ignorResize = false
+    
     fileprivate lazy var backgroundView: UIView = {
        
         var view: UIView = UIView(frame: self.bounds)
@@ -120,6 +122,11 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func resize() {
+        
+        if ignorResize {
+            return
+        }
+        
         self.contentView.frame = CGRect(x: (self.frame.size.width - self.contentView.frame.size.width) / 2, y: (self.frame.size.height - self.contentView.frame.size.height) / 2,
                                             width: self.contentView.frame.size.width, height: self.contentView.frame.size.height)
         
@@ -147,7 +154,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func cancelView(index: Int?, itemName: String?) {
-        
+        self.ignorResize = true
         self.transform = CGAffineTransform.identity
         self.backgroundView.isHidden = true
         UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in

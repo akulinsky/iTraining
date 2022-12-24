@@ -14,6 +14,8 @@ class BaseContextView: UIView {
     // MARK: property
     internal let windowObj: UIWindow
     
+    var ignorResize = false
+    
     internal lazy var backgroundView: UIView = {
         
         var view: UIView = UIView(frame: self.bounds)
@@ -112,6 +114,10 @@ class BaseContextView: UIView {
     
     internal func resize() {
         
+        if ignorResize {
+            return
+        }
+        
         self.contentView.frame = CGRect(x: (self.frame.size.width - self.contentView.frame.size.width) / 2, y: (self.frame.size.height - self.contentView.frame.size.height) / 2,
             width: self.contentView.frame.size.width, height: self.contentView.frame.size.height)
         
@@ -120,7 +126,7 @@ class BaseContextView: UIView {
     }
     
     internal func cancelView(_ isDone: Bool) {
-        
+        self.ignorResize = true
         self.transform = CGAffineTransform.identity
         self.backgroundView.isHidden = true
         UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in

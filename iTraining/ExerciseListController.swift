@@ -304,6 +304,8 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                     cell.setData(anObject as AnyObject)
                 }
             }
+        @unknown default:
+            fatalError()
         }
     }
     
