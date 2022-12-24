@@ -24,8 +24,8 @@ class AlertView: NSObject, UIAlertViewDelegate {
     class func showAlert(message: String, cancelFunc: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertView.alertView!.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertController.Style.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { action in cancelFunc() }))
         if let controller = AlertView.topViewController() {
             controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
         }
@@ -37,8 +37,8 @@ class AlertView: NSObject, UIAlertViewDelegate {
     class func showAlert(message: String, titleCancelButton: String, cancelFunc: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertController.Style.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertAction.Style.cancel, handler: { action in cancelFunc() }))
         if let controller = AlertView.topViewController() {
             controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
         }
@@ -50,8 +50,8 @@ class AlertView: NSObject, UIAlertViewDelegate {
     class func showAlert(title: String, message: String, cancelFunc: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertView.alertView!.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
+        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: { action in cancelFunc() }))
         if let controller = AlertView.topViewController() {
             controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
         }
@@ -63,9 +63,9 @@ class AlertView: NSObject, UIAlertViewDelegate {
     class func showAlert(title: String?, message: String, titleCancelButton: String, titleOkButton: String, cancelFunc: @escaping ( () -> () ), okFunc: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
-        alertView.alertView!.addAction(UIAlertAction(title: titleOkButton, style: UIAlertActionStyle.default, handler: { acrion in okFunc() }))
+        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertAction.Style.cancel, handler: { action in cancelFunc() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleOkButton, style: UIAlertAction.Style.default, handler: { acrion in okFunc() }))
         if let controller = AlertView.topViewController() {
             controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
         }
@@ -78,10 +78,10 @@ class AlertView: NSObject, UIAlertViewDelegate {
                          cancelFunc: @escaping ( () -> () ), button1Func: @escaping ( () -> () ), button2Func: @escaping ( () -> () )) {
         
         let alertView = AlertView.sharedInstance
-        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.cancel, handler: { action in cancelFunc() }))
-        alertView.alertView!.addAction(UIAlertAction(title: titleButton1, style: UIAlertActionStyle.default, handler: { acrion in button1Func() }))
-        alertView.alertView!.addAction(UIAlertAction(title: titleButton2, style: UIAlertActionStyle.default, handler: { acrion in button2Func() }))
+        alertView.alertView = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertAction.Style.cancel, handler: { action in cancelFunc() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleButton1, style: UIAlertAction.Style.default, handler: { acrion in button1Func() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleButton2, style: UIAlertAction.Style.default, handler: { acrion in button2Func() }))
         if let controller = AlertView.topViewController() {
             controller.navigationController!.present(alertView.alertView!, animated: true, completion: nil)
         }
@@ -99,9 +99,9 @@ class AlertView: NSObject, UIAlertViewDelegate {
         let alertView = AlertView.sharedInstance
         
         var inputTextField: UITextField?
-        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertActionStyle.default, handler: { action in cancelFunc() }))
-        alertView.alertView!.addAction(UIAlertAction(title: titleOkButton, style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        alertView.alertView = UIAlertController(title: nil, message: message, preferredStyle: UIAlertController.Style.alert)
+        alertView.alertView!.addAction(UIAlertAction(title: titleCancelButton, style: UIAlertAction.Style.default, handler: { action in cancelFunc() }))
+        alertView.alertView!.addAction(UIAlertAction(title: titleOkButton, style: UIAlertAction.Style.default, handler: { (action) -> Void in
             okFunc(inputTextField?.text)
         }))
         alertView.alertView!.addTextField(configurationHandler: {(textField: UITextField!) in

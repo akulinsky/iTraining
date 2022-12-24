@@ -58,7 +58,9 @@ class ScreenManager:NSObject {
         self.navigationController!.navigationBar.isTranslucent = false
         self.navigationController!.isNavigationBarHidden = true
         
-        UIApplication.shared.statusBarStyle = .lightContent
+//        UIApplication.shared.statusBarStyle = .lightContent
+//        UIApplication.shared.windowScene?.statusBarManager?.statusBarStyle = .lightContent
+        
         subscribeToEvents()
         showMainScreenAnimation(false)
     }
@@ -71,10 +73,10 @@ class ScreenManager:NSObject {
     // MARK: methods
     fileprivate func subscribeToEvents() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(ScreenManager.showMainScreenNotification(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.ShowMainScreenEvent), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ScreenManager.showSettingScreenNotification(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.ShowSettingsEvent), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showMainScreenNotification(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.ShowMainScreenEvent), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showSettingScreenNotification(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.ShowSettingsEvent), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.AppDidEnterBackgroundEvent), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ScreenManager.applicationDidEnterForeground(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.AppDidEnterForegroundEvent), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidEnterForeground(_:)), name: NSNotification.Name(rawValue: NotificationCenterEvents.AppDidEnterForegroundEvent), object: nil)
     }
     
     fileprivate func showMainScreenAnimation(_ animation: Bool) {
@@ -124,11 +126,11 @@ class ScreenManager:NSObject {
     
     // MARK:
     // MARK: notifications
-    func showMainScreenNotification(_ notification: Notification) {
+    @objc func showMainScreenNotification(_ notification: Notification) {
         showMainScreenAnimation(true)
     }
     
-    func showSettingScreenNotification(_ notification: Notification) {
+    @objc func showSettingScreenNotification(_ notification: Notification) {
         print("showSettingScreenNotification")
     }
     
@@ -136,8 +138,55 @@ class ScreenManager:NSObject {
         print("applicationDidEnterBackground")
     }
     
-    func applicationDidEnterForeground(_ notification: Notification) {
+    @objc func applicationDidEnterForeground(_ notification: Notification) {
         print("applicationDidEnterForeground")
+    }
+}
+
+extension UIApplication {
+    
+    var keyWindow: UIWindow? {
+        // Get connected scenes
+        return UIApplication.shared.connectedScenes
+        // Keep only active scenes, onscreen and visible to the user
+            .filter { $0.activationState == .foregroundActive }
+        // Keep only the first `UIWindowScene`
+            .first(where: { $0 is UIWindowScene })
+        // Get its associated windows
+            .flatMap({ $0 as? UIWindowScene })?.windows
+        // Finally, keep only the key window
+            .first(where: \.isKeyWindow)
+    }
+    
+    var keyWindowPresentedController: UIViewController? {
+        var viewController = self.keyWindow?.rootViewController
+        
+        // If root `UIViewController` is a `UITabBarController`
+        if let presentedController = viewController as? UITabBarController {
+            // Move to selected `UIViewController`
+            viewController = presentedController.selectedViewController
+        }
+        
+        // Go deeper to find the last presented `UIViewController`
+        while let presentedController = viewController?.presentedViewController {
+            // If root `UIViewController` is a `UITabBarController`
+            if let presentedController = presentedController as? UITabBarController {
+                // Move to selected `UIViewController`
+                viewController = presentedController.selectedViewController
+            } else {
+                // Otherwise, go deeper
+                viewController = presentedController
+            }
+        }
+        
+        return viewController
+    }
+    
+    var windowScene: UIWindowScene? {
+        return UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive || $0.activationState == .foregroundInactive }
+            .first(where: { $0 is UIWindowScene })
+            .flatMap({ $0 as? UIWindowScene })
     }
 }
 

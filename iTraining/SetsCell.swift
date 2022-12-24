@@ -10,10 +10,10 @@ import UIKit
 
 class SetsCell: BaseCell {
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.accessoryType = UITableViewCellAccessoryType.none
+        self.accessoryType = UITableViewCell.AccessoryType.none
     }
     
     required init?(coder aDecoder: NSCoder) {

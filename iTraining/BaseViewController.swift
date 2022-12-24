@@ -33,9 +33,14 @@ class BaseViewController: UIViewController {
     
     var heightStatusBar: CGFloat {
         get {
-            return (UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.portrait ||
-                UIApplication.shared.statusBarOrientation == UIInterfaceOrientation.portraitUpsideDown)
-                ? UIApplication.shared.statusBarFrame.size.height : UIApplication.shared.statusBarFrame.size.width
+            
+            guard let scene = UIApplication.shared.windowScene else {
+                fatalError("windowScene == nil")
+            }
+            
+            return (scene.interfaceOrientation == UIInterfaceOrientation.portrait ||
+                    scene.interfaceOrientation == UIInterfaceOrientation.portraitUpsideDown)
+            ? scene.statusBarManager!.statusBarFrame.size.height : scene.statusBarManager!.statusBarFrame.size.width
         }
     }
     
@@ -43,7 +48,7 @@ class BaseViewController: UIViewController {
         
         var view: UIView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.heightStatusBar))
         view.backgroundColor = Utils.colorRed
-        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
         return view
     }()
     
@@ -55,13 +60,13 @@ class BaseViewController: UIViewController {
         }
         var view: UIView = UIView(frame: frame)
         view.backgroundColor = Utils.colorNavigationBar
-        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
         
         if self.navigationController != nil {
             
             var bottomLine: UIView = UIView(frame: CGRect(x: 0, y: self.navigationController!.navigationBar.frame.size.height - 1, width: self.navigationController!.navigationBar.frame.size.width, height: 1))
             bottomLine.backgroundColor = UIColorMakeRGB(red: 229, green: 229, blue: 229)
-            bottomLine.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleTopMargin]
+            bottomLine.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleTopMargin]
             view.addSubview(bottomLine)
         }
         
@@ -75,11 +80,16 @@ class BaseViewController: UIViewController {
         super.viewDidLoad()
 
         self.view.backgroundColor = Utils.colorBackground
-        self.navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:Utils.colorRed]
+        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:Utils.colorRed]
         
         self.title = Utils.stringFromClass(self.classForCoder)
         self.view.addSubview(self.statusBarView)
         self.view.addSubview(self.navigationBarView)
+        
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .milliseconds(100)) {
+//            self.view.addSubview(self.statusBarView)
+//            self.view.addSubview(self.navigationBarView)
+//        }
     }
 
     override func didReceiveMemoryWarning() {

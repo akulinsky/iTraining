@@ -30,7 +30,7 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
         
         var view: UIView = UIView(frame: CGRect(x: 20, y: self.separatorView.edgeY + (self.contentView.frame.size.height - self.separatorView.edgeY - 60) / 2, width: self.contentView.frame.size.width - 40, height: 50))
         view.backgroundColor = UIColor.clear
-        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
         view.layer.borderWidth = 1.0
         view.layer.borderColor = Utils.colorDarkBorder.cgColor
         
@@ -56,9 +56,9 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
         
         super.init(window: window)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertNameView.deviceOrientationDidChangeNotification(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertNameView.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertNameView.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChangeNotification(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIWindow.keyboardWillHideNotification, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -104,7 +104,10 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     }
     
     class func show(_ name: String?, blockName: @escaping ( (_ name: String) -> () )) {
-        let window: UIWindow = UIApplication.shared.windows[0] 
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+            fatalError("UIWindow == nil")
+        }
+        
         let contextView = AlertNameView(window: window)
         contextView.blockName = blockName
         
@@ -122,18 +125,18 @@ class AlertNameView: BaseContextView, UITextFieldDelegate {
     }
     
     // MARK: - Notification
-    func deviceOrientationDidChangeNotification(_ notification: Notification) {
+    @objc func deviceOrientationDidChangeNotification(_ notification: Notification) {
         self.frame = self.windowObj.bounds
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         
         self.keyboardNotification = AKKeyboardNotification(notification)
         
         self.resize()
     }
     
-    func keyboardDidHide(_ notification: Notification) {
+    @objc func keyboardDidHide(_ notification: Notification) {
         self.keyboardNotification = nil
     }
 }

@@ -78,7 +78,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         
         var view: UIView = UIView(frame: CGRect.zero)
         view.backgroundColor = UIColor.clear
-        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
         view.layer.borderWidth = 1.0
         view.layer.borderColor = Utils.colorDarkBorder.cgColor
         return view
@@ -99,7 +99,7 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         
         var view: UIView = UIView(frame: CGRect.zero)
         view.backgroundColor = UIColor.clear
-        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
         view.layer.borderWidth = 1.0
         view.layer.borderColor = Utils.colorDarkBorder.cgColor
         
@@ -137,10 +137,14 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
         
         super.init(window: window)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.deviceOrientationDidChangeNotification(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertSetsView.textDidChangeNotification(_:)), name: NSNotification.Name.UITextFieldTextDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChangeNotification(_:)),
+                                               name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)),
+                                               name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(textDidChangeNotification(_:)),
+                                               name: UITextField.textDidChangeNotification, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -199,7 +203,9 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     }
     
     class func show(_ weight: Float?, reps: Int?, blockValue: @escaping ( (_ weight: Float, _ reps: Int) -> () )) {
-        let window: UIWindow = UIApplication.shared.windows[0] 
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+            fatalError("UIWindow == nil")
+        }
         let contextView = AlertSetsView(window: window)
         contextView.blockValue = blockValue
         
@@ -232,22 +238,22 @@ class AlertSetsView: BaseContextView, UITextFieldDelegate {
     }
     
     // MARK: - Notification
-    func deviceOrientationDidChangeNotification(_ notification: Notification) {
+    @objc func deviceOrientationDidChangeNotification(_ notification: Notification) {
         self.frame = self.windowObj.bounds
     }
     
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         
         self.keyboardNotification = AKKeyboardNotification(notification)
         
         self.resize()
     }
     
-    func keyboardDidHide(_ notification: Notification) {
+    @objc func keyboardDidHide(_ notification: Notification) {
         self.keyboardNotification = nil
     }
     
-    func textDidChangeNotification(_ notification: Notification) {
+    @objc func textDidChangeNotification(_ notification: Notification) {
         if let textField = notification.object as? UITextField {
             if textField == self.tfWeight || textField == self.tfReps {
                 self.reloadData()

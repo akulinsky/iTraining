@@ -22,7 +22,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         var view: UIView = UIView(frame: self.bounds)
         view.backgroundColor = UIColor.black
         view.alpha = 0.3
-        view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+        view.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
         view.isHidden = true
         
         return view
@@ -47,7 +47,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         var view: UIView = UIView(frame: CGRect(x: 0, y: self.btnCancel.frame.origin.y + self.btnCancel.frame.size.height + 3, width: self.contentView.frame.size.width, height: 1))
         view.backgroundColor = UIColorMakeRGB(red: 220, green: 225, blue: 230)
-        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
         
         return view
         }()
@@ -55,23 +55,23 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     fileprivate lazy var btnCancel: UIButton = {
        
         let button = UIButton(frame: CGRect(x: self.contentView.frame.size.width - 75, y: 5, width: 60, height: 30))
-        button.setTitle(NSLocalizedString("***Cancel", comment:""), for: UIControlState())
-        button.setTitleColor(Utils.colorRed, for: UIControlState())
-        button.setTitleColor(UIColor.darkGray, for: UIControlState.highlighted)
+        button.setTitle(NSLocalizedString("***Cancel", comment:""), for: UIControl.State())
+        button.setTitleColor(Utils.colorRed, for: UIControl.State())
+        button.setTitleColor(UIColor.darkGray, for: UIControl.State.highlighted)
         button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(ContextMenuView.clickBtnCancel(_:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(clickBtnCancel(_:)), for: UIControl.Event.touchUpInside)
         
         return button
     }()
     
     fileprivate lazy var tableView: UITableView = {
         
-        var object: UITableView = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
+        var object: UITableView = UITableView(frame: CGRect.zero, style: UITableView.Style.plain)
         //var object: UITableView = UITableView(frame: self.view.bounds, style: UITableViewStyle.Plain)
         object.delegate = self
         object.dataSource = self
         object.backgroundColor = UIColor.clear
-        object.separatorStyle = UITableViewCellSeparatorStyle.none
+        object.separatorStyle = UITableViewCell.SeparatorStyle.none
         object.alwaysBounceVertical = false
         
         return object
@@ -83,7 +83,8 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.windowObj = window
         super.init(frame: window.frame)
         self.setup()
-        NotificationCenter.default.addObserver(self, selector: #selector(ContextMenuView.deviceOrientationDidChangeNotification(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChangeNotification(_:)),
+                                               name: UIDevice.orientationDidChangeNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -105,7 +106,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.contentView.addSubview(self.tableView)
         
         self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
             self.transform = CGAffineTransform.identity
             }) { (finished) -> Void in
             self.backgroundView.isHidden = false
@@ -149,7 +150,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         self.transform = CGAffineTransform.identity
         self.backgroundView.isHidden = true
-        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
             self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
             }) { (finished) -> Void in
                 self.removeFromSuperview()
@@ -161,7 +162,9 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     class func show(_ items: [String], blockSelectItem: @escaping ( (_ index: Int, _ item: String) -> () )) {
-        let window: UIWindow = UIApplication.shared.windows[0] 
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+            fatalError("UIWindow == nil")
+        }
         let contextView = ContextMenuView(window: window)
         contextView.blockSelectItem = blockSelectItem
         contextView.setItems(items)
@@ -171,7 +174,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // MARK:
     // MARK: action
-    func clickBtnCancel(_ sender: UIButton) {
+    @objc func clickBtnCancel(_ sender: UIButton) {
         
         self.cancelView()
     }
@@ -186,7 +189,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
         var cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier)
         
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifier)
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: TableViewCell.identifier)
             cell!.textLabel!.textColor = Utils.colorDarkText
         }
         
@@ -210,7 +213,7 @@ class ContextMenuView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     // MARK: - Notification
-    func deviceOrientationDidChangeNotification(_ notification: Notification) {
+    @objc func deviceOrientationDidChangeNotification(_ notification: Notification) {
         self.frame = self.windowObj.bounds
     }
 }

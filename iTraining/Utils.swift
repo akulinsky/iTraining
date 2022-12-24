@@ -103,7 +103,10 @@ class Utils {
     // MARK:
     
     class func interfaceOrientationIsPortrait() -> Bool {
-        return UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation)
+        guard let scene = UIApplication.shared.windowScene else {
+            fatalError("windowScene == nil")
+        }
+        return scene.interfaceOrientation.isPortrait
     }
 }
 

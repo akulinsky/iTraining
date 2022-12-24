@@ -21,12 +21,12 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     fileprivate lazy var tableView: UITableView = {
         
-        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.heightHeader, width: self.view.frame.size.width, height: self.view.frame.size.height - self.heightHeader), style: UITableViewStyle.plain)
+        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.heightHeader, width: self.view.frame.size.width, height: self.view.frame.size.height - self.heightHeader), style: UITableView.Style.plain)
         object.delegate = self
         object.dataSource = self
         object.backgroundColor = UIColor.clear
-        object.separatorStyle = UITableViewCellSeparatorStyle.none
-        object.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleWidth]
+        object.separatorStyle = UITableViewCell.SeparatorStyle.none
+        object.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
@@ -35,9 +35,9 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     fileprivate lazy var btnOption: UIButton = {
         
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 40))
-        button.setImage(UIImage(named: "dots-hor_red"), for: UIControlState())
-        button.setImage(UIImage(named: "dots-hor"), for: UIControlState.highlighted)
-        button.addTarget(self, action: #selector(ExerciseListController.clickBtnOption(_:)), for: UIControlEvents.touchUpInside)
+        button.setImage(UIImage(named: "dots-hor_red"), for: UIControl.State())
+        button.setImage(UIImage(named: "dots-hor"), for: UIControl.State.highlighted)
+        button.addTarget(self, action: #selector(clickBtnOption(_:)), for: UIControl.Event.touchUpInside)
         
         return button
         }()
@@ -75,7 +75,8 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     func showRightBarButton() {
         if self.tableView.isEditing {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(ExerciseListController.clickBtnDone(_:)))
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done, target:
+                                                                        self, action: #selector(clickBtnDone(_:)))
         }
         else {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.btnOption)
@@ -106,7 +107,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     }
     
     // MARK: - Action
-    func clickBtnOption(_ sender: UIButton) {
+    @objc func clickBtnOption(_ sender: UIButton) {
         
         let items = [NSLocalizedString("***ContextMenuView_Edit", comment:""),
             NSLocalizedString("***ContextMenuView_NewExercise", comment:""),
@@ -116,7 +117,7 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
             if index == 0 {
                 self.tableView.setEditing(true, animated: true)
                 self.showRightBarButton()
-                self.tableView.reloadSections(IndexSet(integer: 0), with: UITableViewRowAnimation.fade)
+                self.tableView.reloadSections(IndexSet(integer: 0), with: UITableView.RowAnimation.fade)
             }
             else if index == 1 {
                 
@@ -153,10 +154,10 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         })
     }
     
-    func clickBtnDone(_ sender: UIBarButtonItem) {
+    @objc func clickBtnDone(_ sender: UIBarButtonItem) {
         self.tableView.setEditing(false, animated: true)
         self.showRightBarButton()
-        self.tableView.reloadSections(IndexSet(integer: 0), with: UITableViewRowAnimation.fade)
+        self.tableView.reloadSections(IndexSet(integer: 0), with: UITableView.RowAnimation.fade)
     }
     
     // MARK: - UITableViewDataSource
@@ -182,10 +183,10 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         if cell == nil {
             
             if let _ = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
-                cell = ExerciseListCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifier)
+                cell = ExerciseListCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: TableViewCell.identifier)
             }
             else {
-                cell = ExerciseTitleCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifierExerciseTitle)
+                cell = ExerciseTitleCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: TableViewCell.identifierExerciseTitle)
             }
         }
         
@@ -241,9 +242,9 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         isMovingItem = false
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == UITableViewCellEditingStyle.delete {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
             DataManager.removeItem(self.fetchedResults!.object(at: indexPath) as! NSManagedObject)
         }
     }
@@ -284,17 +285,17 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
             
         case .delete:
             if let indexPath = indexPath {
-                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .move:
             if let indexPath = indexPath {
                 if let newIndexPath = newIndexPath {
-                    self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-                    self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                    self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
                 }
             }
         case .update:

@@ -28,7 +28,7 @@ public struct AKKeyboardNotification {
     
     /// Start frame of the keyboard in screen coordinates
     public var screenFrameBegin: CGRect {
-        if let value = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue {
+        if let value = userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue {
             return value.cgRectValue
         }
         else {
@@ -38,7 +38,7 @@ public struct AKKeyboardNotification {
     
     /// End frame of the keyboard in screen coordinates
     public var screenFrameEnd: CGRect {
-        if let value = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+        if let value = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             return value.cgRectValue
         }
         else {
@@ -48,7 +48,7 @@ public struct AKKeyboardNotification {
     
     /// Keyboard animation duration
     public var animationDuration: Double {
-        if let number = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber {
+        if let number = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber {
             return number.doubleValue
         }
         else {
@@ -62,10 +62,10 @@ public struct AKKeyboardNotification {
     /// UIViewAnimationCurve enum value.  For example, in iOS 7 and iOS 8,
     /// this returns the value 7.
     public var animationCurve: Int {
-        if let number = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber {
+        if let number = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber {
             return number.intValue
         }
-        return UIViewAnimationCurve.easeInOut.rawValue
+        return UIView.AnimationCurve.easeInOut.rawValue
     }
     
     /// Start frame of the keyboard in coordinates of specified view

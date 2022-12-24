@@ -119,7 +119,9 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
     }
     
     class func show(_ value: TimeInterval?, blockValue: @escaping ( (_ value: TimeInterval) -> () )) {
-        let window: UIWindow = UIApplication.shared.windows[0] 
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+            fatalError("UIWindow == nil")
+        }
         let contextView = AlertSelectBreakTime(window: window)
         contextView.blockValue = blockValue
         
@@ -156,10 +158,10 @@ class AlertSelectBreakTime: BaseContextView, UIPickerViewDataSource, UIPickerVie
         
         var attributedString: NSAttributedString?
         if component == 0 {
-            attributedString = NSAttributedString(string: self.arrMinutes[row], attributes: [NSForegroundColorAttributeName: Utils.colorDarkText])
+            attributedString = NSAttributedString(string: self.arrMinutes[row], attributes: [NSAttributedString.Key.foregroundColor: Utils.colorDarkText])
         }
         else {
-            attributedString = NSAttributedString(string: self.arrSeconds[row], attributes: [NSForegroundColorAttributeName: Utils.colorDarkText])
+            attributedString = NSAttributedString(string: self.arrSeconds[row], attributes: [NSAttributedString.Key.foregroundColor: Utils.colorDarkText])
         }
         
         return attributedString

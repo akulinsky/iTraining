@@ -18,12 +18,12 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     
     fileprivate lazy var tableView: UITableView = {
         
-        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.heightHeader, width: self.view.frame.size.width, height: self.view.frame.size.height - self.heightHeader), style: UITableViewStyle.plain)
+        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.heightHeader, width: self.view.frame.size.width, height: self.view.frame.size.height - self.heightHeader), style: UITableView.Style.plain)
         object.delegate = self
         object.dataSource = self
         object.backgroundColor = UIColor.clear
-        object.separatorStyle = UITableViewCellSeparatorStyle.none
-        object.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleWidth]
+        object.separatorStyle = UITableViewCell.SeparatorStyle.none
+        object.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleWidth]
         object.allowsSelectionDuringEditing = true
         object.isEditing = true
         
@@ -41,7 +41,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         
         self.view.addSubview(self.tableView)
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.add, target: self, action: #selector(SetsController.clickBtnAdd(_:)))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(SetsController.clickBtnAdd(_:)))
     }
     
     override func didReceiveMemoryWarning() {
@@ -81,7 +81,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
     }
     
     // MARK: - Action
-    func clickBtnAdd(_ sender: UIBarButtonItem) {
+    @objc func clickBtnAdd(_ sender: UIBarButtonItem) {
         
         AlertSetsView.show(nil, reps: nil, blockValue: { (weight, reps) -> () in
             
@@ -107,7 +107,7 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         var cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as? SetsCell
         
         if cell == nil {
-            cell = SetsCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifier)
+            cell = SetsCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: TableViewCell.identifier)
         }
         
         cell!.setData(self.fetchedResults!.object(at: indexPath))
@@ -138,9 +138,9 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
         isMovingItem = false
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == UITableViewCellEditingStyle.delete {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
             DataManager.removeItem(self.fetchedResults!.object(at: indexPath) as! NSManagedObject)
         }
     }
@@ -171,17 +171,17 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
             
         case .delete:
             if let indexPath = indexPath {
-                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .move:
             if let indexPath = indexPath {
                 if let newIndexPath = newIndexPath {
-                    self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-                    self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                    self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
                 }
             }
         case .update:
@@ -190,6 +190,8 @@ class SetsController: BaseViewController, UITableViewDataSource, UITableViewDele
                     cell.setData(anObject as AnyObject)
                 }
             }
+        @unknown default:
+            fatalError()
         }
     }
     

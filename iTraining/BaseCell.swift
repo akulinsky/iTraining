@@ -12,12 +12,12 @@ class BaseCell: UITableViewCell {
 
     // MARK:
     // MARK: init
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = UIColor.clear
         self.textLabel!.textColor = Utils.colorDarkText
-        self.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+        self.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
         
         self.addSubview(self.bottomLine)
     }

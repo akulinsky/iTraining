@@ -18,12 +18,12 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     
     fileprivate lazy var tableView: UITableView = {
         
-        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.heightHeader, width: self.view.frame.size.width, height: self.view.frame.size.height - self.heightHeader), style: UITableViewStyle.plain)
+        var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.heightHeader, width: self.view.frame.size.width, height: self.view.frame.size.height - self.heightHeader), style: UITableView.Style.plain)
         object.delegate = self
         object.dataSource = self
         object.backgroundColor = UIColor.clear
-        object.separatorStyle = UITableViewCellSeparatorStyle.none
-        object.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleWidth]
+        object.separatorStyle = UITableViewCell.SeparatorStyle.none
+        object.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
@@ -32,9 +32,9 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     fileprivate lazy var btnOption: UIButton = {
        
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 40))
-        button.setImage(UIImage(named: "dots-hor_red"), for: UIControlState())
-        button.setImage(UIImage(named: "dots-hor"), for: UIControlState.highlighted)
-        button.addTarget(self, action: #selector(TrainingListController.clickBtnOption(_:)), for: UIControlEvents.touchUpInside)
+        button.setImage(UIImage(named: "dots-hor_red"), for: UIControl.State())
+        button.setImage(UIImage(named: "dots-hor"), for: UIControl.State.highlighted)
+        button.addTarget(self, action: #selector(clickBtnOption(_:)), for: UIControl.Event.touchUpInside)
         
         return button
     }()
@@ -70,7 +70,9 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     
     func showRightBarButton() {
         if self.tableView.isEditing {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(TrainingListController.clickBtnDone(_:)))
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.done,
+                                                                     target: self,
+                                                                     action: #selector(clickBtnDone(_:)))
         }
         else {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.btnOption)
@@ -101,7 +103,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
     }
     
     // MARK: - Action
-    func clickBtnOption(_ sender: UIButton) {
+    @objc func clickBtnOption(_ sender: UIButton) {
         
         let items = [NSLocalizedString("***ContextMenuView_Edit", comment:""),
                      NSLocalizedString("***ContextMenuView_NewTraining", comment:"")]
@@ -166,7 +168,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
 //        }
 //    }
     
-    func clickBtnDone(_ sender: UIBarButtonItem) {
+    @objc func clickBtnDone(_ sender: UIBarButtonItem) {
         self.tableView.setEditing(false, animated: true)
         self.showRightBarButton()
     }
@@ -183,7 +185,7 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         var cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as? TrainingListCell
         
         if cell == nil {
-            cell = TrainingListCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifier)
+            cell = TrainingListCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: TableViewCell.identifier)
         }
         
         cell!.setData(self.fetchedResults!.object(at: indexPath))
@@ -218,9 +220,9 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
         isMovingItem = false
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-        if editingStyle == UITableViewCellEditingStyle.delete {
+        if editingStyle == UITableViewCell.EditingStyle.delete {
             DataManager.removeItem(self.fetchedResults!.object(at: indexPath) as! NSManagedObject)
         }
     }
@@ -261,17 +263,17 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
             
         case .delete:
             if let indexPath = indexPath {
-                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .move:
             if let indexPath = indexPath {
                 if let newIndexPath = newIndexPath {
-                    self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-                    self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                    self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
                 }
             }
         case .update:
@@ -280,6 +282,8 @@ class TrainingListController: BaseViewController, UITableViewDataSource, UITable
                     cell.setData(anObject as AnyObject)
                 }
             }
+        @unknown default:
+            fatalError()
         }
     }
     

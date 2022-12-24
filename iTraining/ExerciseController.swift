@@ -20,12 +20,12 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         
         var object: UITableView = UITableView(frame: CGRect(x: 0, y: self.bottomLineView.edgeY,
                                                 width: self.view.frame.size.width, height: self.view.frame.size.height - self.bottomLineView.edgeY),
-                                                style: UITableViewStyle.plain)
+                                              style: UITableView.Style.plain)
         object.delegate = self
         object.dataSource = self
         object.backgroundColor = UIColor.clear
-        object.separatorStyle = UITableViewCellSeparatorStyle.none
-        object.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleWidth]
+        object.separatorStyle = UITableViewCell.SeparatorStyle.none
+        object.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleWidth]
         object.allowsSelectionDuringEditing = true
         
         return object
@@ -34,9 +34,9 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     fileprivate lazy var btnOption: UIButton = {
         
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 40))
-        button.setImage(UIImage(named: "dots-hor_red"), for: UIControlState())
-        button.setImage(UIImage(named: "dots-hor"), for: UIControlState.highlighted)
-        button.addTarget(self, action: #selector(ExerciseController.clickBtnOption(_:)), for: UIControlEvents.touchUpInside)
+        button.setImage(UIImage(named: "dots-hor_red"), for: UIControl.State())
+        button.setImage(UIImage(named: "dots-hor"), for: UIControl.State.highlighted)
+        button.addTarget(self, action: #selector(ExerciseController.clickBtnOption(_:)), for: UIControl.Event.touchUpInside)
         
         return button
         }()
@@ -69,10 +69,10 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     fileprivate lazy var btnBeginExercise: UIButton = {
         
         let button: UIButton = UIButton(frame: CGRect(x: 20, y: self.lblBreakTime.edgeY + 10, width: self.view.frame.width - 40, height: 50))
-        button.setTitle(NSLocalizedString("***ExerciseController_BtnBeginExercise", comment:""), for: UIControlState())
-        button.setTitleColor(UIColor.white, for: UIControlState())
-        button.setTitleColor(Utils.colorLightText, for: UIControlState.highlighted)
-        button.addTarget(self, action: #selector(ExerciseController.clickBtnBeginExercise(_:)), for: UIControlEvents.touchUpInside)
+        button.setTitle(NSLocalizedString("***ExerciseController_BtnBeginExercise", comment:""), for: UIControl.State())
+        button.setTitleColor(UIColor.white, for: UIControl.State())
+        button.setTitleColor(Utils.colorLightText, for: UIControl.State.highlighted)
+        button.addTarget(self, action: #selector(clickBtnBeginExercise(_:)), for: UIControl.Event.touchUpInside)
         button.backgroundColor = Utils.colorGreen
         
         return button
@@ -82,7 +82,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         
         var bottomLine: UIView = UIView(frame: CGRect(x: 0, y: self.btnBeginExercise.edgeY + 10, width: self.view.frame.size.width, height: 1))
         bottomLine.backgroundColor = UIColorMakeRGB(red: 229, green: 229, blue: 229)
-        bottomLine.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleTopMargin]
+        bottomLine.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleTopMargin]
         return bottomLine
         }()
     
@@ -130,7 +130,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
     }
     
     // MARK: - Action
-    func clickBtnOption(_ sender: UIButton) {
+    @objc func clickBtnOption(_ sender: UIButton) {
         
         let items = [NSLocalizedString("***ContextMenuView_EditTitleExercise", comment:""),
                         NSLocalizedString("***ContextMenuView_EditBreakTime", comment:""),
@@ -163,7 +163,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         })
     }
     
-    func clickBtnBeginExercise(_ sender: UIButton) {
+    @objc func clickBtnBeginExercise(_ sender: UIButton) {
         print("clickBtnBeginExercise")
     }
     
@@ -178,7 +178,7 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
         var cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier) as? SetsCell
         
         if cell == nil {
-            cell = SetsCell(style: UITableViewCellStyle.default, reuseIdentifier: TableViewCell.identifier)
+            cell = SetsCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: TableViewCell.identifier)
         }
         
         cell!.setData(self.fetchedResults!.object(at: indexPath))
@@ -208,17 +208,17 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
             
         case .delete:
             if let indexPath = indexPath {
-                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
+                self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .move:
             if let indexPath = indexPath {
                 if let newIndexPath = newIndexPath {
-                    self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-                    self.tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
+                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                    self.tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
                 }
             }
         case .update:
@@ -227,6 +227,8 @@ class ExerciseController: BaseViewController, UITableViewDataSource, UITableView
                     cell.setData(anObject as AnyObject)
                 }
             }
+        @unknown default:
+            fatalError()
         }
     }
     

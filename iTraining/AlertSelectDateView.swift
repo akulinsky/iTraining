@@ -20,7 +20,7 @@ class AlertSelectDateView: UIView {
         var view: UIView = UIView(frame: self.bounds)
         view.backgroundColor = UIColor.black
         view.alpha = 0.3
-        view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+        view.autoresizingMask = [UIView.AutoresizingMask.flexibleWidth, UIView.AutoresizingMask.flexibleHeight]
         view.isHidden = true
         
         return view
@@ -44,7 +44,7 @@ class AlertSelectDateView: UIView {
         
         var view: UIView = UIView(frame: CGRect(x: 0, y: self.btnDone.frame.origin.y + self.btnDone.frame.size.height + 3, width: self.contentView.frame.size.width, height: 1))
         view.backgroundColor = UIColorMakeRGB(red: 220, green: 225, blue: 230)
-        view.autoresizingMask = UIViewAutoresizing.flexibleWidth
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleWidth
         
         return view
         }()
@@ -52,11 +52,11 @@ class AlertSelectDateView: UIView {
     fileprivate lazy var btnDone: UIButton = {
         
         let button = UIButton(frame: CGRect(x: self.contentView.frame.size.width - 65, y: 5, width: 60, height: 30))
-        button.setTitle(NSLocalizedString("***Done", comment:""), for: UIControlState())
-        button.setTitleColor(Utils.colorRed, for: UIControlState())
-        button.setTitleColor(UIColor.darkGray, for: UIControlState.highlighted)
+        button.setTitle(NSLocalizedString("***Done", comment:""), for: UIControl.State())
+        button.setTitleColor(Utils.colorRed, for: UIControl.State())
+        button.setTitleColor(UIColor.darkGray, for: UIControl.State.highlighted)
         button.backgroundColor = UIColor.clear
-        button.addTarget(self, action: #selector(AlertSelectDateView.clickBtnDone(_:)), for: UIControlEvents.touchUpInside)
+        button.addTarget(self, action: #selector(clickBtnDone(_:)), for: UIControl.Event.touchUpInside)
         
         return button
         }()
@@ -64,8 +64,8 @@ class AlertSelectDateView: UIView {
     fileprivate lazy var datePicker: UIDatePicker = {
         
         var view: UIDatePicker = UIDatePicker(frame: CGRect.zero)
-        view.addTarget(self, action: #selector(AlertSelectDateView.resultDatePicker(_:)), for: UIControlEvents.valueChanged)
-        view.datePickerMode = UIDatePickerMode.date
+        view.addTarget(self, action: #selector(resultDatePicker(_:)), for: UIControl.Event.valueChanged)
+        view.datePickerMode = UIDatePicker.Mode.date
         
         return view
         }()
@@ -99,13 +99,13 @@ class AlertSelectDateView: UIView {
         self.contentView.addSubview(self.datePicker)
         
         self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
-        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
             self.transform = CGAffineTransform.identity
             }) { (finished) -> Void in
                 self.backgroundView.isHidden = false
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(AlertSelectDateView.deviceOrientationDidChangeNotification(_:)), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChangeNotification(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
     override func layoutSubviews() {
@@ -119,8 +119,10 @@ class AlertSelectDateView: UIView {
         self.datePicker.frame = CGRect(x: 10, y: self.separatorView.frame.origin.y + self.separatorView.frame.size.height + 15, width: self.contentView.frame.size.width - 20, height: 50)
     }
     
-    class func showDatePicker(mode: UIDatePickerMode, date: Date?, minDate: Date?, maxDate: Date?, blockSelectDate: @escaping ( (Date) -> () ) ) {
-        let window: UIWindow = UIApplication.shared.windows[0] 
+    class func showDatePicker(mode: UIDatePicker.Mode, date: Date?, minDate: Date?, maxDate: Date?, blockSelectDate: @escaping ( (Date) -> () ) ) {
+        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+            fatalError("UIWindow == nil")
+        }
         let alertSelectDateView = AlertSelectDateView(window: window)
         alertSelectDateView.blockSelectDate = blockSelectDate
         alertSelectDateView.datePicker.datePickerMode = mode
@@ -140,12 +142,12 @@ class AlertSelectDateView: UIView {
     
     // MARK:
     // MARK: action
-    func clickBtnDone(_ sender: UIButton) {
+    @objc func clickBtnDone(_ sender: UIButton) {
         //println("clickBtnCancel")
         
         self.transform = CGAffineTransform.identity
         self.backgroundView.isHidden = true
-        UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: { () -> Void in
             self.transform = CGAffineTransform(scaleX: 0.01, y: 0.01)
             }) { (finished) -> Void in
                 self.removeFromSuperview()
@@ -156,12 +158,12 @@ class AlertSelectDateView: UIView {
         }
     }
     
-    func resultDatePicker(_ sender: UIDatePicker) {
+    @objc func resultDatePicker(_ sender: UIDatePicker) {
         print(sender.date)
     }
     
     // MARK: - Notification
-    func deviceOrientationDidChangeNotification(_ notification: Notification) {
+    @objc func deviceOrientationDidChangeNotification(_ notification: Notification) {
         self.frame = self.windowObj.bounds
     }
 

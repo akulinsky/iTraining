@@ -10,7 +10,7 @@ import UIKit
 
 class ExerciseTitleCell: BaseCell {
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = Utils.colorLightBorder
@@ -19,8 +19,8 @@ class ExerciseTitleCell: BaseCell {
         self.textLabel!.shadowOffset = CGSize(width: 1.0, height: 1.0)
         self.textLabel!.shadowColor = Utils.colorLightText
         //self.textLabel!.textColor = UIColorMakeRGB(red: 205, green: 92, blue: 92)
-        self.accessoryType = UITableViewCellAccessoryType.none
-        self.selectionStyle = UITableViewCellSelectionStyle.none
+        self.accessoryType = UITableViewCell.AccessoryType.none
+        self.selectionStyle = UITableViewCell.SelectionStyle.none
         //self.bottomLine.removeFromSuperview()
     }
     
