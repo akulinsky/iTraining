@@ -14,6 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var screenManager: ScreenManager?
+    
+    private let databaseName = "iTraining"
+    private let extFile = ".sqlite"
+    private let extFileShm = ".sqlite-shm"
+    private let extFileWal = ".sqlite-wal"
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -21,9 +26,79 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.screenManager = ScreenManager(window: self.window)
         
+        
+//        fromLocalToDocument()
+//        fromDocumentToLocal()
+//        exit(0)
+        
         DataContainer.sharedInstance.dataManager.managedObject = self.persistentContainer.viewContext
         
         return true
+    }
+    
+    private func fromLocalToDocument() {
+        
+        //"iTraining.sqlite"
+        
+        let pathDB = NSPersistentContainer.defaultDirectoryURL().appending(component: databaseName + extFile)
+        let pathShmDB = NSPersistentContainer.defaultDirectoryURL().appending(component: databaseName + extFileShm)
+        let pathWalDB = NSPersistentContainer.defaultDirectoryURL().appending(component: databaseName + extFileWal)
+        
+        let storeDocumentUrl = FileManager.default.urls(for: .documentDirectory,
+                                                        in:.userDomainMask).first!.appending(component: databaseName + extFile)
+        
+        let storeDocumentShmUrl = FileManager.default.urls(for: .documentDirectory,
+                                                           in:.userDomainMask).first!.appending(component: databaseName + extFileShm)
+        
+        let storeDocumentWalUrl = FileManager.default.urls(for: .documentDirectory,
+                                                           in:.userDomainMask).first!.appending(component: databaseName + extFileWal)
+        
+        print("DBG_ from: \(pathDB.path())")
+        print("DBG_ to: \(storeDocumentUrl.path())")
+        
+        if FileManager.default.fileExists(atPath: (pathDB.path)) {
+            /// Removes old files
+            if FileManager.default.fileExists(atPath: (storeDocumentUrl.path)) {
+                try! FileManager.default.removeItem(at: storeDocumentUrl)
+                try! FileManager.default.removeItem(at: storeDocumentShmUrl)
+                try! FileManager.default.removeItem(at: storeDocumentWalUrl)
+            }
+            
+            try! FileManager.default.copyItem(at: pathDB, to: storeDocumentUrl)
+            try! FileManager.default.copyItem(at: pathShmDB, to: storeDocumentShmUrl)
+            try! FileManager.default.copyItem(at: pathWalDB, to: storeDocumentWalUrl)
+        }
+    }
+    
+    private func fromDocumentToLocal() {
+        let pathDB = NSPersistentContainer.defaultDirectoryURL().appending(component: databaseName + extFile)
+        let pathShmDB = NSPersistentContainer.defaultDirectoryURL().appending(component: databaseName + extFileShm)
+        let pathWalDB = NSPersistentContainer.defaultDirectoryURL().appending(component: databaseName + extFileWal)
+        
+        let storeDocumentUrl = FileManager.default.urls(for: .documentDirectory,
+                                                        in:.userDomainMask).first!.appending(component: databaseName + extFile)
+        
+        let storeDocumentShmUrl = FileManager.default.urls(for: .documentDirectory,
+                                                           in:.userDomainMask).first!.appending(component: databaseName + extFileShm)
+        
+        let storeDocumentWalUrl = FileManager.default.urls(for: .documentDirectory,
+                                                           in:.userDomainMask).first!.appending(component: databaseName + extFileWal)
+        
+        print("DBG_ from: \(storeDocumentUrl.path())")
+        print("DBG_ to: \(pathDB.path())")
+        
+        if FileManager.default.fileExists(atPath: (storeDocumentUrl.path)) {
+            /// Removes old files
+            if FileManager.default.fileExists(atPath: (pathDB.path)) {
+                try! FileManager.default.removeItem(at: pathDB)
+                try! FileManager.default.removeItem(at: pathShmDB)
+                try! FileManager.default.removeItem(at: pathWalDB)
+            }
+            
+            try! FileManager.default.copyItem(at: storeDocumentUrl, to: pathDB)
+            try! FileManager.default.copyItem(at: storeDocumentShmUrl, to: pathShmDB)
+            try! FileManager.default.copyItem(at: storeDocumentWalUrl, to: pathWalDB)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
