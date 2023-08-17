@@ -34,6 +34,7 @@
 "***ContextMenuView_EditBreakTime" = "Edit Break Time";
 "***ContextMenuView_EditSets" = "Edit Sets";
 "***ContextMenuView_NewSet" = "New Set";
+"***ContextMenuView_PastExercises" = "Past Exercises";
 
 // TrainingListController
 "***TrainingListController_Title" = "Training List";

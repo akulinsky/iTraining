@@ -43,6 +43,8 @@
 		F65E17041AC46ACC0058D4A9 /* SetsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65E17031AC46ACC0058D4A9 /* SetsItem.swift */; };
 		F67C63381ACAEBD5006873BF /* BaseContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67C63371ACAEBD5006873BF /* BaseContextView.swift */; };
 		F67C633A1ACAFE91006873BF /* AlertSelectBreakTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67C63391ACAFE91006873BF /* AlertSelectBreakTime.swift */; };
+		F6CD94542A8BB565003A0ECD /* ActionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CD94532A8BB565003A0ECD /* ActionController.swift */; };
+		F6CD94592A8BDE6E003A0ECD /* NotifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6CD94582A8BDE6E003A0ECD /* NotifyView.swift */; };
 		F6D6595F1ACACA6D0041FD09 /* ExerciseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D6595E1ACACA6D0041FD09 /* ExerciseController.swift */; };
 		F6D659611ACACA970041FD09 /* SetsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D659601ACACA970041FD09 /* SetsController.swift */; };
 		F6D659631ACACAED0041FD09 /* SetsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6D659621ACACAED0041FD09 /* SetsCell.swift */; };
@@ -117,6 +119,8 @@
 		F65E17031AC46ACC0058D4A9 /* SetsItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetsItem.swift; sourceTree = "<group>"; };
 		F67C63371ACAEBD5006873BF /* BaseContextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseContextView.swift; sourceTree = "<group>"; };
 		F67C63391ACAFE91006873BF /* AlertSelectBreakTime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertSelectBreakTime.swift; sourceTree = "<group>"; };
+		F6CD94532A8BB565003A0ECD /* ActionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionController.swift; sourceTree = "<group>"; };
+		F6CD94582A8BDE6E003A0ECD /* NotifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifyView.swift; sourceTree = "<group>"; };
 		F6D6595E1ACACA6D0041FD09 /* ExerciseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseController.swift; sourceTree = "<group>"; };
 		F6D659601ACACA970041FD09 /* SetsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetsController.swift; sourceTree = "<group>"; };
 		F6D659621ACACAED0041FD09 /* SetsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetsCell.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				F67C63391ACAFE91006873BF /* AlertSelectBreakTime.swift */,
 				F631FFF31ACC399A0099F051 /* AlertSetsView.swift */,
 				F64729631AC1CB0E00383D63 /* ContextMenuView.swift */,
+				F6CD94582A8BDE6E003A0ECD /* NotifyView.swift */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -317,6 +322,7 @@
 				F6DE2A901AA9C048006C8103 /* BaseViewController.swift */,
 				F64729671AC2F0F400383D63 /* AKUIView+Extensions.swift */,
 				F63F06231AC4752700A14266 /* DataContainer.swift */,
+				F6CD94532A8BB565003A0ECD /* ActionController.swift */,
 				F63F06251AC4753600A14266 /* ConfigDataProvider.swift */,
 				F63F06211AC4716C00A14266 /* DataManager.swift */,
 				F64642331AC5606900542604 /* BaseCell.swift */,
@@ -497,9 +503,11 @@
 				F6FCDE0D1AC06FAD006FF632 /* TrainingListController.swift in Sources */,
 				F6DE2A911AA9C048006C8103 /* BaseViewController.swift in Sources */,
 				F6DCD0851AC98B3100E94E96 /* ExerciseTitle.swift in Sources */,
+				F6CD94542A8BB565003A0ECD /* ActionController.swift in Sources */,
 				F64729661AC2CD2300383D63 /* AlertSelectDateView.swift in Sources */,
 				F64729561AC175CE00383D63 /* NavigationPanelController.swift in Sources */,
 				F65E17041AC46ACC0058D4A9 /* SetsItem.swift in Sources */,
+				F6CD94592A8BDE6E003A0ECD /* NotifyView.swift in Sources */,
 				F63576BD1A9F234700B71A0A /* AppDelegate.swift in Sources */,
 				F64729521AC16EE500383D63 /* UIViewController+JASidePanel.m in Sources */,
 				F6DE2A871AA88E7E006C8103 /* Utils.swift in Sources */,

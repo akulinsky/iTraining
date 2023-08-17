@@ -10,33 +10,26 @@ import UIKit
 
 class DataContainer {
     
-//    private static var __once: () = {
-//            Static.instance = DataContainer()
-//        }()
-    static let sharedInstance = DataContainer()
-    
     // MARK:
     // MARK: sharedInstance
-//    class var sharedInstance: DataContainer {
-//        struct Static {
-//            static var onceToken: Int = 0
-//            static var instance: DataContainer? = nil
-//        }
-//        _ = DataContainer.__once
-//        return Static.instance!
-//    }
+    
+    static let sharedInstance = DataContainer()
     
     // MARK:
     // MARK: init
     init() {
         self.configDataProvider = ConfigDataProvider()
         self.dataManager = DataManager()
+        actionController = ActionController()
     }
     
     // MARK:
     // MARK: property
     var configDataProvider: ConfigDataProvider
+    
     var dataManager: DataManager
+    
+    var actionController: ActionController
     
     // MARK:
     // MARK: methods

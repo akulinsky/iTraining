@@ -49,7 +49,6 @@ class TrainingGroupController: BaseViewController, UITableViewDataSource, UITabl
         
         self.title = NSLocalizedString("***TrainingGroupController_Title", comment:"")
         self.fetchedResults = DataManager.fetchedResultsControllerForTrainingGroupItems(trainingItem: self.trainingItem)
-        //self.fetchedResults = DataManager.fetchedResultsControllerForTrainingGroupItems(trainingItem: nil)
         self.fetchedResults!.delegate = self
         
         self.view.addSubview(self.tableView)

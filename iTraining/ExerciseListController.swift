@@ -52,7 +52,6 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         
         self.title = NSLocalizedString("***ExerciseListController_Title", comment:"")
         self.fetchedResults = DataManager.fetchedResultsControllerForExerciseItems(trainingGroupItem: self.trainingGroupItem)
-        //self.fetchedResults = DataManager.fetchedResultsControllerForExerciseItems(trainingGroupItem: nil)
         self.fetchedResults!.delegate = self
         
         self.view.addSubview(self.tableView)
@@ -109,9 +108,14 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     // MARK: - Action
     @objc func clickBtnOption(_ sender: UIButton) {
         
-        let items = [NSLocalizedString("***ContextMenuView_Edit", comment:""),
+        var items = [NSLocalizedString("***ContextMenuView_Edit", comment:""),
             NSLocalizedString("***ContextMenuView_NewExercise", comment:""),
             NSLocalizedString("***ContextMenuView_NewTitleExercise", comment:"")]
+        
+        let exercisesCopy = ActionController.shared.pastExercises()
+        if exercisesCopy != nil {
+            items.append(NSLocalizedString("***ContextMenuView_PastExercises", comment:""))
+        }
         
         ContextMenuView.show(items, blockSelectItem: { (index, item) -> () in
             if index == 0 {
@@ -139,7 +143,6 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                 
                 AlertNameView.show(nil, blockName: { (name) -> () in
                     if !name.isEmpty {
-                        //self.changePositionItems()
                         let item: ExerciseTitle = DataManager.createItem(nameItem: CoreDataObjectNames.ExerciseTitle) as! ExerciseTitle
                         item.title = name
                         if let trainingGroupItem = self.trainingGroupItem {
@@ -150,6 +153,17 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
                         DataManager.save()
                     }
                 })
+            } else if index == 3, item == NSLocalizedString("***ContextMenuView_PastExercises", comment:"") {
+                if let exercisesCopy = exercisesCopy {
+                    exercisesCopy.forEach { exerciseItem in
+                        if let trainingGroupItem = self.trainingGroupItem {
+                            exerciseItem.trainingGroup = trainingGroupItem
+                        }
+                        exerciseItem.position = NSNumber(value: self.fetchedResults!.fetchedObjects!.count)
+                        
+                        DataManager.save()
+                    }
+                }
             }
         })
     }
@@ -168,9 +182,6 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        //let identifierCell = "cell \(indexPath.section) - \(indexPath.row)"
-        
-        //var cell = tableView.dequeueReusableCellWithIdentifier(TableViewCell.identifier) as? BaseCell
         var cell: BaseCell?
         
         if let _ = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
@@ -191,6 +202,15 @@ class ExerciseListController: BaseViewController, UITableViewDelegate, UITableVi
         }
         
         cell!.setData(self.fetchedResults!.object(at: indexPath))
+        
+        if let cell = cell as? ExerciseListCell {
+            cell.longPressedBlock = {
+                if let item = self.fetchedResults!.fetchedObjects![indexPath.row] as? ExerciseItem {
+                    ActionController.shared.copyExercises([item])
+                    NotifyView.show(text: "Copyed", onView: self.navigationController!.navigationBar)
+                }
+            }
+        }
         
         return cell!
     }

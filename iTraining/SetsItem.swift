@@ -17,4 +17,11 @@ class SetsItem: NSManagedObject {
     @NSManaged var exercise: ExerciseItem
     @NSManaged var position: NSNumber
 
+    func makeCopy() -> SetsItem {
+        let item: SetsItem = DataManager.createItem(nameItem: CoreDataObjectNames.SetsItem) as! SetsItem
+        item.reps = reps
+        item.weight = weight
+        item.position = position
+        return item
+    }
 }

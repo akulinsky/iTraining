@@ -9,9 +9,15 @@
 import UIKit
 
 class ExerciseListCell: BaseCell {
+    
+    var longPressedBlock: (()->())?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressed(sender:)))
+        longPressRecognizer.minimumPressDuration = 2
+        self.addGestureRecognizer(longPressRecognizer)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,5 +40,12 @@ class ExerciseListCell: BaseCell {
             self.textLabel!.text = exerciseItem.title
         }
     }
-
+    
+    @objc private func longPressed(sender: UILongPressGestureRecognizer) {
+        if sender.state != UIGestureRecognizer.State.ended {
+            if let longPressedBlock = longPressedBlock {
+                longPressedBlock()
+            }
+        }
+    }
 }

@@ -15,4 +15,7 @@ class BaseItem: NSManagedObject {
     @NSManaged var title: String
     @NSManaged var position: NSNumber
 
+    func makeCopy(for item: BaseItem) {
+        item.title = title
+    }
 }
